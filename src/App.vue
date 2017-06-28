@@ -3,19 +3,19 @@
     <v-index></v-index>
     <!--<img src="./assets/logo.png">-->
     <router-view></router-view>
-  <div class="footer" v-show="showFooter">
-    <router-link to="/play">
-      <img :src="picUrl" alt="" class="avatar" v-show="avatarShow" >
-      <img :src="picUrl" alt="" class="avatar1" v-show="avatar1Show" >
-      <div class="Name">
-      <p class="name">{{name}}</p><br/>
-      <small class="singerName">{{singerName}}</small>
-      </div>
-      </router-link>
-      <audio :src="src" class="audio" v-bind:autoplay="isPlay" loop></audio>
-      <img class="img" src="./assets/icons/pause.png" alt="" @click="play" v-show="!isPlay">
-      <img class="img1" src="./assets/icons/play.png" alt="" @click="play" v-show="isPlay" >
-  </div>
+    <div class="footer" v-show="showFooter">
+      <router-link to="/play">
+        <img :src="picUrl" alt="" class="avatar" v-show="avatarShow" >
+        <img :src="picUrl" alt="" class="avatar1" v-show="avatar1Show" >
+        <div class="Name">
+        <p class="name">{{name}}</p><br/>
+        <small class="singerName">{{singerName}}</small>
+        </div>
+        </router-link>
+        <audio :src="src" class="audio" v-bind:autoplay="isPlay" loop></audio>
+        <img class="img" src="./assets/icons/pause.png" alt="" @click="play" v-show="!isPlay">
+        <img class="img1" src="./assets/icons/play.png" alt="" @click="play" v-show="isPlay" >
+    </div>
   </div>
 </template>
 
@@ -67,6 +67,9 @@ export default {
       right: 2rem;
       top: 1rem;
     }
+}
+body {
+  margin: 0;
 }
 
 </style>

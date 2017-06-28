@@ -160,7 +160,7 @@ export default {
    }
    i {
         position: absolute;
-        left: 10.5rem;
+        left: 9rem;
         top: 5rem;
         width: 1.1rem;
         background-size: 100%;

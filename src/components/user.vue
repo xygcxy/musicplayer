@@ -76,7 +76,7 @@ export default {
 
 <style lang="scss">
     .user {
-        margin: 9rem -1rem 5rem -1rem;
+        margin: 9rem 0 5rem 0;
     }
     .btn-login {
         border: 1px solid #31C37C;
