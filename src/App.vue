@@ -8,7 +8,7 @@
         <img :src="picUrl" alt="" class="avatar" v-show="avatarShow" >
         <img :src="picUrl" alt="" class="avatar1" v-show="avatar1Show" >
         <div class="Name">
-        <p class="name">{{name}}</p><br/>
+        <p class="name">{{name}}</p><br>
         <small class="singerName">{{singerName}}</small>
         </div>
         </router-link>
@@ -25,7 +25,7 @@ export default {
   name: 'app',
   data () {
     return {
-
+        showFooter: true
     }
   },
   components: {
@@ -46,7 +46,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  // margin-top: 60px;
 }
 .footer {
     position: fixed;
@@ -54,7 +54,7 @@ export default {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 5rem;
+    height: 4rem;
     background-color: #ededed;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -62,10 +62,10 @@ export default {
     align-items: center;
     img {
       position: absolute;
-      width: 3rem;
-      height: 3rem;
+      width: 2.5rem;
+      height: 2.5rem;
       right: 2rem;
-      top: 1rem;
+      top: 0.7rem;
     }
 }
 body {

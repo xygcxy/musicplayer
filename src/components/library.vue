@@ -1,7 +1,8 @@
 <template>
+<div>
   <div class="library">
       <div class="banner">
-      <swiper loop auto :list="demo01_list" v-model="demo01_index" @on-index-change="demo01_onIndexChange" dots-position="center"></swiper>
+      <swiper loop auto :list="demo01_list"  dots-position="center"></swiper>
       </div>
       <div class="lib-content">
           <div class="lib-section">
@@ -49,44 +50,130 @@
         <span>热门推荐</span>
         <i class="icon-rec"></i>
         <div class="album-content">
-
+            <div class="detail">
+                <a href="">
+                <img src="http://img5.duitang.com/uploads/item/201410/24/20141024224232_BAL24.thumb.700_0.jpeg" alt="">
+                 <p>每周新歌: 周笔畅用声音温暖时光</p>
+            </a>
+            </div>
+            <div class="detail">
+                <a href="">
+                <img src="http://img5.duitang.com/uploads/item/201410/24/20141024224232_BAL24.thumb.700_0.jpeg" alt="">
+                 <p>每周新歌: 周笔畅用声音温暖时光</p>
+            </a>
+            </div>
+            <div class="detail">
+                <a href="">
+                <img src="http://img5.duitang.com/uploads/item/201410/24/20141024224232_BAL24.thumb.700_0.jpeg" alt="">
+                 <p>每周新歌: 周笔畅用声音温暖时光</p>
+            </a>
+            </div>
         </div>
       </div>
       <div class="song-recommend">
         <span>每日为你推荐·30首</span>
         <i class="icon-rec"></i>
         <div class="album-content">
-
+            <div class="detail">
+                <a href="">
+                <img src="http://img5.duitang.com/uploads/item/201410/24/20141024224232_BAL24.thumb.700_0.jpeg" alt="">
+                 <span>每周新歌: 周笔畅用声音温暖时光</span>
+            </a>
+            </div>
         </div>
       </div>
       <div class="song-new">
         <span>新歌速递</span>
         <i class="icon-rec"></i>
         <div class="album-content">
-
+            <div class="detail">
+                <a href="">
+                <img src="http://img5.duitang.com/uploads/item/201410/24/20141024224232_BAL24.thumb.700_0.jpeg" alt="">
+                 <p>每周新歌: 周笔畅用声音温暖时光</p>
+            </a>
+            </div>
+            <div class="detail">
+                <a href="">
+                <img src="http://img5.duitang.com/uploads/item/201410/24/20141024224232_BAL24.thumb.700_0.jpeg" alt="">
+                 <p>每周新歌: 周笔畅用声音温暖时光</p>
+            </a>
+            </div>
+            <div class="detail">
+                <a href="">
+                <img src="http://img5.duitang.com/uploads/item/201410/24/20141024224232_BAL24.thumb.700_0.jpeg" alt="">
+                 <p>每周新歌: 周笔畅用声音温暖时光</p>
+            </a>
+            </div>
         </div>
       </div>
       <div class="select-radio">
         <span>精选电台</span>
         <i class="icon-rec"></i>
         <div class="album-content">
-
+            <div class="radio-type"></div>
+            <div class="detail">
+                <a href="">
+                <img src="http://img5.duitang.com/uploads/item/201410/24/20141024224232_BAL24.thumb.700_0.jpeg" alt="">
+                 <p>每周新歌: 周笔畅用声音温暖时光</p>
+            </a>
+            </div>
+            <div class="detail">
+                <a href="">
+                <img src="http://img5.duitang.com/uploads/item/201410/24/20141024224232_BAL24.thumb.700_0.jpeg" alt="">
+                 <p>每周新歌: 周笔畅用声音温暖时光</p>
+            </a>
+            </div>
+            <div class="detail">
+                <a href="">
+                <img src="http://img5.duitang.com/uploads/item/201410/24/20141024224232_BAL24.thumb.700_0.jpeg" alt="">
+                 <p>每周新歌: 周笔畅用声音温暖时光</p>
+            </a>
+            </div>
         </div>
       </div>
       <div class="special">
         <span>专栏</span>
         <i class="icon-rec"></i>
         <div class="album-content">
-
+            <div class="sp-detail">
+                <a href="">
+                <img src="http://img5.duitang.com/uploads/item/201410/24/20141024224232_BAL24.thumb.700_0.jpeg" alt="">
+                 <p>每周新歌: 周笔畅用声音温暖时光</p>
+            </a>
+            </div>
+            <div class="sp-detail">
+                <a href="">
+                <img src="http://img5.duitang.com/uploads/item/201410/24/20141024224232_BAL24.thumb.700_0.jpeg" alt="">
+                 <p>每周新歌: 周笔畅用声音温暖时光</p>
+            </a>
+            </div>
         </div>
       </div>
       <div class="rec-singer">
         <span>乐人</span>
         <i class="icon-rec"></i>
         <div class="album-content">
-
+            <div class="detail">
+                <a href="">
+                <img src="http://img5.duitang.com/uploads/item/201410/24/20141024224232_BAL24.thumb.700_0.jpeg" alt="">
+                 <p>每周新歌: 周笔畅用声音温暖时光</p>
+            </a>
+            </div>
+            <div class="detail">
+                <a href="">
+                <img src="http://img5.duitang.com/uploads/item/201410/24/20141024224232_BAL24.thumb.700_0.jpeg" alt="">
+                 <p>每周新歌: 周笔畅用声音温暖时光</p>
+            </a>
+            </div>
+            <div class="detail">
+                <a href="">
+                <img src="http://img5.duitang.com/uploads/item/201410/24/20141024224232_BAL24.thumb.700_0.jpeg" alt="">
+                 <p>每周新歌: 周笔畅用声音温暖时光</p>
+            </a>
+            </div>
         </div>
       </div>
+  </div>
   </div>
 </template>
 
@@ -122,7 +209,7 @@ export default {
 
 <style lang="scss">
 .banner {
-    margin-top: 7.03rem;
+    margin-top: 6.03rem;
 }
 .lib-content {
         margin-top: 1.8rem;
@@ -134,6 +221,9 @@ export default {
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;
+}
+.rec-singer {
+    padding-bottom: 4rem;
 }
 .lib-section {
     img {
@@ -166,6 +256,45 @@ export default {
 .hot-recommend {
     span {
 
+    }
+}
+.album-content {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+}
+.detail {
+
+    img {
+        width: 7.76rem;
+        height: 7.76rem;
+    }
+    p {
+        padding-left: 0.5rem;
+        font-size: 0.5rem;
+        width: 7.2rem;
+        text-align: left;
+    }
+    a {
+        text-decoration: none;
+        color: #000;
+    }
+    
+}
+.sp-detail {
+    img {
+        width: 11.7rem;
+        height: 5rem;
+    }
+    p {
+        padding-left: 0.5rem;
+        font-size: 0.5rem;
+        width: 11.2rem;
+        text-align: left;
+    }
+    a {
+        text-decoration: none;
+        color: #000;
     }
 }
 </style>

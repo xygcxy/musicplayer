@@ -1,24 +1,24 @@
 <template>
-        <div class="header">
+<div>
+        <div class="header" :class="{'showheader': isshow }">
             <div class="top">
                 <div class="left-icon">
                     <img src="../assets/icons/xian.png" @click="toggleSiderbar">
                 </div>
                 <div class="top-content">
-                    <router-link to="/">
+                    <router-link to="/index" active-class="link-active">
                     <span>我的</span>
                     </router-link> 
-                    <router-link to="/library">
+                    <router-link to="/library" active-class="link-active">
                     <span>音乐馆</span>
                     </router-link>
-                    <router-link to="/seek">
+                    <router-link to="/seek" active-class="link-active">
                     <span>发现</span>
                     </router-link>
                 </div>
                 <div class="right-icon">
                     <img src="../assets/icons/shiqu.png">
                 </div>
-                <div>
                     <transition name="sider">
                         <div class="siderbar" v-show="showsider">
                             <div class="siderbar-header">
@@ -62,13 +62,15 @@
                     <transition name="sider">
                         <div class="mask" v-show="showsider" @click="toggleSiderbar"></div>
                     </transition>
-                </div>
             </div>
-            <div class="search">
+            <div class="search-banner">
                 <div class="search-input">
                     <router-link to="/search">
-                    <input type="text" placeholder="搜索">
-                    <i class="search-icon"></i>
+                    <i class="return-icon" @click="returnheader"></i>
+                    <div class="home-search" @click="isshowheader"> 
+                        <input type="text" class="default-input" :class="{'inputsearch': isshow }" :placeholder="searchname" >
+                        <a href="" class="btn-search">搜索</a>
+                    <i class="search-icon" v-show="showsearchicon"></i></div>
                     </router-link>
                 </div>
             </div>
@@ -76,7 +78,7 @@
         <!--<v-user></v-user>-->
         <!--<router-view></router-view>
         <v-footer></v-footer>-->
-   
+   </div>
 </template>
 
 <script>
@@ -86,6 +88,10 @@ export default {
   data () {
     return {
         showsider: false,
+        isshow: false,
+        issider: false,
+        showsearchicon: true,
+        searchname: '搜索',
     }
   },
   components: {
@@ -94,7 +100,18 @@ export default {
   },
   methods: {
       toggleSiderbar () {
-          this.showsider = !this.showsider
+          this.showsider = !this.showsider;
+      },
+      isshowheader () {
+          this.isshow = 'ture';
+          this.showsearchicon = false;
+          this.searchname = '搜索音乐、歌词、歌单';
+      },
+      returnheader () {
+          this.isshow = false;
+          this.showsearchicon = true;
+          this.searchname = '搜索';
+          this.$router.go(-1);
       }
   }
 }
@@ -111,7 +128,7 @@ export default {
 .header{
     background-color: #31C37C;
     width: 100%;
-    height: 7rem;
+    height: 6rem;
     position: fixed;
     left: 0;
     top: 0;
@@ -121,11 +138,11 @@ export default {
     width: 100%;
     display: flex;
     justify-content: center;
-    padding-top: 1.8rem;
+    padding-top: 1.4rem;
     span{
         color: #DBF3E8;
-        font-size:1.2rem; 
-        padding-left: 1.2rem;   
+        font-size:1rem; 
+        padding-left: 1.5rem;   
     }
     img {
         width: 1.5rem;
@@ -140,32 +157,49 @@ export default {
   position: absolute;
   right: 0.8rem;
 }
-.search{
+.link-active {
+    span {
+        font-size: 1.1rem;
+        color: #fff;
+    }
+}
+.search-banner{
    input{
        position: absolute;
        left: 1rem;
-       top: 4.5rem;
-       width: 90%;
-       height: 1.5rem;
-       text-align: center;
+       top: 4rem;
+       height: 1rem;
        padding: 0.3rem;
        background-color: #2AAA6D;
        border-radius: 0.2rem;
        border: none;
        font-size: 1rem;
+       z-index: 15;
+       color: #DBF3E8;
        outline: none;
        &::placeholder{
            color: #DBF3E8;
        }
    }
-   i {
+   .search-icon {
         position: absolute;
         left: 9rem;
-        top: 5rem;
+        top: 4.3rem;
         width: 1.1rem;
+        z-index: 15;
         background-size: 100%;
         height: 1.1rem;
         background-image: url('../assets/icons/search.png');
+   }
+
+   .return-icon {
+        position: absolute;
+        left: 0.7rem;
+        top: 4rem;
+        background-size: 100%;
+        height: 1.6rem;
+        width: 1.6rem;
+        background-image: url('../assets/icons/return.png');
    }
 }
 .top-content{
@@ -183,8 +217,36 @@ export default {
     background-color: white;
     // opacity: 0.7;
     
-    z-index: 9;
+    z-index: 99;
     overflow-y: scroll;
+}
+
+.btn-search {
+    position: absolute;
+    right: 1rem;
+    top: 4.1rem;
+    z-index: 10;
+    text-decoration: none;
+    color: #DBF3E8;
+}
+.showsider {
+    transition: all 0.5s;
+    transform: translateX(-90%);
+}
+.showheader {
+    transition: all 0.5s;
+    transform: translateY(-3.5rem);
+}
+.default-input {
+    width: 90%;
+    text-align: center;
+}
+.inputsearch {
+    width: 70%;
+    text-align: left;
+    transition: all 0.3s;
+    transform: translateX(2rem);
+    width: 70%;
 }
 .siderbar.sider-enter-active,
 .siderbar.sider-leave-active {
@@ -275,7 +337,7 @@ export default {
     left: 0;
     bottom: 0;
     right: 0;
-    z-index: 2;
+    z-index: 90;
     opacity: 0.7;
     background-color: black;
 }

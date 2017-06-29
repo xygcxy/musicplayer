@@ -1,4 +1,5 @@
 <template>
+<div>
       <div class="user">
           <div class="login">
               <p>登录听歌，听得越多，推得越准</p>
@@ -65,6 +66,7 @@
           <div class="song-sheet">
               <span>自建歌单</span> | <span>收藏歌单</span>
           </div>
+      </div>
       </div>
 </template>
 
