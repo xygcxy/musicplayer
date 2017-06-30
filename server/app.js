@@ -8,6 +8,11 @@ router.get('/api/dailysuggest', function*() {
     this.body = data && {data: data};
 })
 
+router.get('/api/homedata', function*() {
+    var data = yield {recdata: MusicApi.getHomeData(), newsongrec: MusicApi.getnewalbum()};
+    this.body = data && {data: data};
+})
+
 router.get('/api/searchsuggest/:key', function*() {
     let vendor = this.params.key;
     var data = yield MusicApi.searchSuggestion(key);

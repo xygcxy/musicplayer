@@ -2,7 +2,7 @@
   <div id="app">
     <v-index></v-index>
     <!--<img src="./assets/logo.png">-->
-    <router-view></router-view>
+    <keep-alive><router-view></router-view></keep-alive>
     <div class="footer" v-show="showFooter">
       <router-link to="/play">
         <img :src="picUrl" alt="" class="avatar" v-show="avatarShow" >
@@ -25,7 +25,8 @@ export default {
   name: 'app',
   data () {
     return {
-        showFooter: true
+        showFooter: true,
+        isPlay: ''
     }
   },
   components: {
@@ -40,6 +41,14 @@ export default {
 </script>
 
 <style lang="scss">
+* {
+  // margin: 0;
+  // padding: 0;
+  text-decoration: none;
+  font-family: Tahoma;
+}
+html{
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

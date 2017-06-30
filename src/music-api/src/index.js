@@ -205,6 +205,14 @@ const getTop = (topid, raw) => {
   return QQAPI.getTop(topid);
 }
 
+const getHomeData = () => {
+  return QQAPI.getHomeData();
+}
+
+const getnewalbum = () => {
+  return QQAPI.getnewalbum();
+}
+
 const musicAPI = {
   searchSong: searchSong,
   searchAlbum: searchAlbum,
@@ -214,6 +222,8 @@ const musicAPI = {
   getAlbum: getAlbum,
   getPlaylist: getPlaylist,
   getDailySuggest: getDailySuggest,
+  getHomeData: getHomeData,
+  getnewalbum: getnewalbum,
   searchSuggestion: searchSuggestion
 }
 

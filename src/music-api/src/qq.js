@@ -113,6 +113,26 @@ const getTop = (topid, raw) => {
   })
 }
 
+const getHomeData = () => {
+  let url = `https://c.y.qq.com/v8/fcg-bin/fcg_first_yqq.fcg?format=jsonp&tpl=v12&page=other&platform=h5`;
+  return new Promise((resolve, reject) => {
+    fetch(url)
+      .then(res => res.text())
+      .then(text => {
+        if(text.substr(0, 17) === 'MusicJsonCallback'){
+          text = text.replace('MusicJsonCallback(', '');
+          let json = JSON.parse(text.substr(0, text.length - 1));
+        resolve(json)
+        }
+      })
+      .catch(err => reject({
+        success: false,
+        message: err
+      }))
+  });
+}
+
+
 const getSong = (mid, raw) => {
   return new Promise((resolve, reject) => {
     generateKey(mid)
@@ -428,13 +448,34 @@ const searchSuggestion = (key) => {
   });
 }
 
+const getnewalbum = () => {
+  let url = `http://c.y.qq.com/v8/fcg-bin/fcg_first_yqq.fcg?format=jsonp&tpl=portal&page=album&callback=GetRecomAlbumCallback`;
+  return new Promise((resolve, reject) => {
+    fetch(url)
+      .then(res => res.text())
+      .then(text => {
+        if(text.substr(0, 17) === 'MusicJsonCallback'){
+          text = text.replace('MusicJsonCallback(', '');
+          let json = JSON.parse(text.substr(0, text.length - 1));
+        resolve(json)
+        }
+      })
+      .catch(err => reject({
+        success: false,
+        message: err
+      }))
+  });
+}
+
 module.exports = {
   searchSong: searchSong,
   searchPlaylist: searchPlaylist,
   searchAlbum: searchAlbum,
   getSong: getSong,
   getTop: getTop,
+  getHomeData: getHomeData,
   getAlbum: getAlbum,
+  getnewalbum: getnewalbum,
   getPlaylist: getPlaylist,
   searchSuggestion: searchSuggestion,
 };

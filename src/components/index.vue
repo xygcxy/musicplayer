@@ -159,7 +159,7 @@ export default {
 }
 .link-active {
     span {
-        font-size: 1.1rem;
+        font-size: 1.05rem;
         color: #fff;
     }
 }
