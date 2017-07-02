@@ -6,7 +6,7 @@
     </div>
     <div class="search-rec">
         <p>鹿晗</p>
-         <p>鹿晗</p>
+        <p>鹿晗</p>
     </div>
   </div>
   </div>
@@ -14,7 +14,32 @@
 
 <script>
 export default {
-  
+  data () {
+      return {
+          searchlist:''
+      }
+  },
+  created () {
+      this.searchrequest();
+  },
+  methods: {
+      searchrequest (){
+        this.Axios.get('http://localhost:3001/api/hotsearch')
+            .then(res => {
+                if (res.status == 200) {
+                    //热门搜索
+                    // this.focuslist = res.data.data.recdata.data.focus.map((item, index) => ({
+                    //     url: '',
+                    //     img: item.pic,
+                    // }));
+                    console.log(res.data.data.data);
+                }
+            })
+            .catch(function(err){
+                console.log(err);
+        });
+      }
+  }
 }
 </script>
 

@@ -48,7 +48,7 @@
               </div>
       </div>
       <div class="hot-recommend">
-        <span>热门推荐</span>
+        <span class="rec-title">热门推荐</span>
         <i class="icon-rec"></i>
         <div class="album-content">
             <div class="detail" v-for="item in hotlist" :key="item.id">
@@ -60,7 +60,7 @@
         </div>
       </div>
       <div class="song-recommend">
-        <span>每日为你推荐·30首</span>
+        <span class="rec-title">每日为你推荐·30首</span>
         <i class="icon-rec"></i>
         <div class="album-content">
             <!--<div class="detail">
@@ -72,7 +72,7 @@
         </div>
       </div>
       <div class="song-new">
-        <span>新歌速递</span>
+        <span class="rec-title">新歌速递</span>
         <i class="icon-rec"></i>
         <div class="album-content">
             <div class="detail">
@@ -96,7 +96,7 @@
         </div>
       </div>
       <div class="select-radio">
-        <span>精选电台</span>
+        <span class="rec-title">精选电台</span>
         <i class="icon-rec"></i>
         <div class="album-content">
             <div class="radio-type"></div>
@@ -121,19 +121,20 @@
         </div>
       </div>
       <div class="special">
-        <span>MV</span>
+        <span class="rec-title">MV</span>
         <i class="icon-rec"></i>
         <div class="album-content">
             <div class="sp-detail" v-for="item in mvlist" :key="item.id">
                 <a :href="item.url">
                 <img :src="item.imgurl" alt="">
                  <p>{{item.title}}</p>
+                 <p class="small">{{item.subtitle}}</p>
                 </a>
             </div>
         </div>
       </div>
       <div class="rec-singer">
-        <span>乐人</span>
+        <span class="rec-title">乐人</span>
         <i class="icon-rec"></i>
         <div class="album-content">
             <div class="detail" v-for="item in newsongreclist" :key="item.id">
@@ -176,16 +177,19 @@ export default {
         this.Axios.get('http://localhost:3001/api/homedata')
             .then(res => {
                 if (res.status == 200) {
+                    //焦点图
                     this.focuslist = res.data.data.recdata.data.focus.map((item, index) => ({
                         url: item.jumpurl && item.jumpurl || item.type == 3002 ?'https://y.qq.com/n/yqq/album/'+ item.id + '.html' : item.type == 10012 ? 'https://y.qq.com/n/yqq/mv/v/' + item.id + '.html' : item.type == 10002 ? 'https://y.qq.com/n/yqq/album/' + item.id + '.html' : '',
                         img: item.pic,
                     }));
+                    //热门推荐
                     this.hotlist = res.data.data.recdata.data.hotdiss.list.slice(0,6).map((item, index) => ({
                         url: 'https://y.qq.com/n/yqq/playlist/' + item.dissid + '.html',
                         imgurl: item.imgurl,
                         title: item.dissname,
                         num: item.listennum
                     }));
+                    //MV
                     this.mvlist = res.data.data.recdata.data.shoubomv.all.slice(0, 4).map((item, index) => ({
                         url: 'https://y.qq.com/n/yqq/mv/v/' + item.vid + '.html',
                         imgurl: item.picurl,
@@ -193,7 +197,9 @@ export default {
                         subtitle: item.mvdesc,
                         num: item.listennum
                     }));
+                    //排行榜
                     this.toplist = res.data.data.recdata.data.toplist;
+                    //最新专辑（名人）
                     this.newsongreclist = res.data.data.newsongrec.data.album.all.slice(0, 3).map((item, index) => ({
                         url: 'https://y.qq.com/n/yqq/album/'+ item.Falbum_mid + '.html',
                         imgurl: 'https://y.gtimg.cn/music/photo_new/T002R300x300M000' + item.Falbum_mid + '.jpg',
@@ -217,10 +223,10 @@ export default {
     width: 100%;
     height: 100%;
     z-index: 999;
-    background-color: #eee;
+    background-color: #f4f4f4;
     img {
         position: fixed;
-        top: 50%;
+        top: 45%;
         left: 30%;
     }
 }
@@ -282,6 +288,9 @@ export default {
 
     }
 }
+.rec-title {
+    font-size: 1.2rem;
+}
 .album-content {
     margin-top: 1rem;
     display: flex;
@@ -313,7 +322,7 @@ export default {
     span {
         position: absolute;
         left: 0.1rem;
-        top: 6.5rem;
+        top: 7.5rem;
         color: #eee;
         font-size: 0.5rem;
     }
@@ -334,6 +343,9 @@ export default {
     a {
         text-decoration: none;
         color: #000;
+    }
+    .small {
+        color: #868484;
     }
 }
 </style>

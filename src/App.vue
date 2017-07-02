@@ -26,7 +26,13 @@ export default {
   data () {
     return {
         showFooter: true,
-        isPlay: ''
+        isPlay: '',
+        picUrl: '',
+        src: '',
+        name: '',
+        singerName: '',
+        avatarShow: true,
+        avatar1Show: true
     }
   },
   components: {
