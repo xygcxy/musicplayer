@@ -1,12 +1,10 @@
 <template>
 <div>
   <div class="search">
-    <div class="search-title">
-        <p>热门搜索</p>
-    </div>
+    <h3>热门搜索</h3>
     <div class="search-rec">
-        <p>鹿晗</p>
-        <p>鹿晗</p>
+       <a :href="specialurl" class="special-k">{{specialname}}</a>
+        <a @click="search(item.name)" v-for="item in searchlist" :key="item.id" class="normal-k" >{{item.name}}</a>
     </div>
   </div>
   </div>
@@ -16,7 +14,10 @@
 export default {
   data () {
       return {
-          searchlist:''
+          searchlist:'',
+          specialname: '',
+          specialurl: '',
+          searchkey: ''
       }
   },
   created () {
@@ -28,11 +29,31 @@ export default {
             .then(res => {
                 if (res.status == 200) {
                     //热门搜索
-                    // this.focuslist = res.data.data.recdata.data.focus.map((item, index) => ({
-                    //     url: '',
-                    //     img: item.pic,
+                    this.searchlist = res.data.data.data.hotkey.slice(0, 10).map((item, index) => ({
+                        name: item.k,
+                        num: item.n,
+                    }));
+                    this.specialname = res.data.data.data.special_key;
+                    this.specialurl = res.data.data.data.special_url;
+                }
+            })
+            .catch(function(err){
+                console.log(err);
+        });
+      },
+      search(item) {
+          this.Axios.get('http://localhost:3001/api/search/song/qq?key='+item)
+            .then(res => {
+                this.searchkey = item;
+                if (res.status == 200) {
+                    //搜索
+                    // this.searchlist = res.data.data.data.hotkey.slice(0, 10).map((item, index) => ({
+                    //     name: item.k,
+                    //     num: item.n,
                     // }));
-                    console.log(res.data.data.data);
+                    // this.specialname = res.data.data.data.special_key;
+                    // this.specialurl = res.data.data.data.special_url;
+                    console.log(res.data.data.songList);
                 }
             })
             .catch(function(err){
@@ -45,16 +66,29 @@ export default {
 
 <style lang="scss">
 .search {
-    margin-top: 4rem;
+    margin-top: 6.8rem;
 }
-.search-title{
+h3{
     text-align: left;
     margin-left: 1rem;
+    margin-bottom: 0.5rem;
+}
+.special-k {
+    padding: 0.2rem 1rem;
+    margin-bottom: 0.6rem;
+    margin-right: 0;
+    margin-left: 1rem;
+    border: 1px solid #fc4524;
+    border-radius: 2rem;
+    color: #fc4524;
 }
 .search-rec{
     display: flex;
-    p{
-        padding: 0.3rem 1rem 0.3rem 1rem;
+    flex-wrap:wrap;
+    .normal-k{
+        padding: 0.2rem 1rem;
+        margin-bottom: 0.6rem;
+        margin-right: 0;
         margin-left: 1rem;
         border: 1px solid #eee;
         border-radius: 2rem;

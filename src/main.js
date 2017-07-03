@@ -16,11 +16,13 @@
 // 活动：https://y.qq.com/vipportal/json/activity/act_0.json?_=1498638624637&loginUin=o0729815936&hostUin=0&format=jsonp&inCharset=GB2312&outCharset=utf-8&notice=0&platform=musicvip&jsonpCallback=MusicJsonCallback&needNewCode=0
 //歌单页：https://y.qq.com/n/yqq/album/002NPIfB0Z3O5c.html# 根据id定义规则
 //电台: https://y.qq.com/portal/player_radio.html#id=99
+//热门搜索显示：https://c.y.qq.com/soso/fcgi-bin/search_for_qq_cp?g_tk=292689510&uin=729815936&format=json&inCharset=utf-8&outCharset=utf-8&notice=0&platform=h5&needNewCode=1&w=%E5%90%8C%E4%B8%80%E7%A7%92%E5%BF%AB%E4%B9%90+TFBOYS&zhidaqu=1&catZhida=1&t=0&flag=1&ie=utf-8&sem=1&aggr=0&perpage=20&n=20&p=1&remoteplace=txt.mqq.all&_=1499066029186
 import Vue from 'vue'
 import App from './App'
 import router from './router'
 import vux from 'vux'
 import axios from 'axios'
+import store from './store/store'
 
 Vue.use(axios)
 Vue.prototype.Axios = axios
@@ -30,6 +32,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: { App }
 })

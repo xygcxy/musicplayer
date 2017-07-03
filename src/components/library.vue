@@ -289,7 +289,7 @@ export default {
     }
 }
 .rec-title {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
 }
 .album-content {
     margin-top: 1rem;
@@ -322,7 +322,7 @@ export default {
     span {
         position: absolute;
         left: 0.1rem;
-        top: 7.5rem;
+        top: 7rem;
         color: #eee;
         font-size: 0.5rem;
     }

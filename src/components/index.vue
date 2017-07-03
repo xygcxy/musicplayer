@@ -68,7 +68,7 @@
                     <router-link to="/search">
                     <i class="return-icon" @click="returnheader"></i>
                     <div class="home-search" @click="isshowheader"> 
-                        <input type="text" class="default-input" :class="{'inputsearch': isshow }" :placeholder="searchname" >
+                        <input type="text" class="default-input" :class="{'inputsearch': isshow }" :placeholder="searchname" :value="searchkey" >
                         <a href="" class="btn-search">搜索</a>
                     <i class="search-icon" v-show="showsearchicon"></i></div>
                     </router-link>
@@ -92,6 +92,7 @@ export default {
         issider: false,
         showsearchicon: true,
         searchname: '搜索',
+        searchkey: '',
     }
   },
   components: {
