@@ -78,13 +78,13 @@
             <div class="detail">
                 <a href="/newsong">
                 <img src="https://y.gtimg.cn/music/photo_new/T002R300x300M000002214db2ALiIG.jpg" alt="">
-                 <p>I</p>
+                 <p>I - 鹿晗</p>
             </a>
             </div>
             <div class="detail">
                 <a href="/albumsong">
                 <img src="https://y.gtimg.cn/music/photo_new/T002R300x300M000001okwKr2HGL0h.jpg" alt="">
-                 <p>还来得及</p>
+                 <p>还来得及 - 黄子韬</p>
             </a>
             </div>
             <div class="detail">
@@ -179,7 +179,7 @@ export default {
                 if (res.status == 200) {
                     //焦点图
                     this.focuslist = res.data.data.recdata.data.focus.map((item, index) => ({
-                        url: item.jumpurl && item.jumpurl || item.type == 3002 ?'https://y.qq.com/n/yqq/album/'+ item.id + '.html' : item.type == 10012 ? 'https://y.qq.com/n/yqq/mv/v/' + item.id + '.html' : item.type == 10002 ? 'https://y.qq.com/n/yqq/album/' + item.id + '.html' : '',
+                        url: item.jumpurl ? item.jumpurl : item.type == 3002 ?'https://y.qq.com/n/yqq/album/'+ item.id + '.html' : item.type == 10012 ? 'https://y.qq.com/n/yqq/mv/v/' + item.id + '.html' : item.type == 10002 ? 'https://y.qq.com/n/yqq/album/' + item.id + '.html' : '',
                         img: item.pic,
                     }));
                     //热门推荐
@@ -187,7 +187,7 @@ export default {
                         url: 'https://y.qq.com/n/yqq/playlist/' + item.dissid + '.html',
                         imgurl: item.imgurl,
                         title: item.dissname,
-                        num: item.listennum
+                        num: this.shorten(item.listennum)
                     }));
                     //MV
                     this.mvlist = res.data.data.recdata.data.shoubomv.all.slice(0, 4).map((item, index) => ({
@@ -195,7 +195,7 @@ export default {
                         imgurl: item.picurl,
                         title: item.mvtitle,
                         subtitle: item.mvdesc,
-                        num: item.listennum
+                        num: this.shorten(item.listennum)
                     }));
                     //排行榜
                     this.toplist = res.data.data.recdata.data.toplist;
@@ -272,9 +272,7 @@ export default {
 }
 .lib-section .icon-left {
         position: absolute;
-        left: 1rem;
-        
-        
+        left: 1rem;      
 }
 .icon-right {
     position: absolute;
@@ -322,7 +320,7 @@ export default {
     span {
         position: absolute;
         left: 0.1rem;
-        top: 7rem;
+        bottom: 3.7rem;
         color: #eee;
         font-size: 0.5rem;
     }
@@ -346,6 +344,7 @@ export default {
     }
     .small {
         color: #868484;
+        margin-top: -10px;
     }
 }
 </style>

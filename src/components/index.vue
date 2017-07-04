@@ -82,6 +82,7 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 // import user from '@/components/user'
 // import footer from '@/components/footer'
 export default {
@@ -92,7 +93,7 @@ export default {
         issider: false,
         showsearchicon: true,
         searchname: '搜索',
-        searchkey: '',
+        // searchkey: '',
     }
   },
   components: {
@@ -112,9 +113,13 @@ export default {
           this.isshow = false;
           this.showsearchicon = true;
           this.searchname = '搜索';
+          this.$store.commit('getsearchkey', '');
           this.$router.go(-1);
       }
-  }
+  },
+  computed: mapGetters({
+           searchkey:'getsearchkey'
+    })
 }
 </script>
 
@@ -160,7 +165,6 @@ export default {
 }
 .link-active {
     span {
-        font-size: 1.05rem;
         color: #fff;
     }
 }
@@ -184,7 +188,7 @@ export default {
    }
    .search-icon {
         position: absolute;
-        left: 9rem;
+        left: 40%;
         top: 4.3rem;
         width: 1.1rem;
         z-index: 15;
@@ -236,7 +240,7 @@ export default {
 }
 .showheader {
     transition: all 0.5s;
-    transform: translateY(-3.5rem);
+    transform: translateY(-3.3rem);
 }
 .default-input {
     width: 90%;

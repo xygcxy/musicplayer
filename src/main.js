@@ -17,6 +17,9 @@
 //歌单页：https://y.qq.com/n/yqq/album/002NPIfB0Z3O5c.html# 根据id定义规则
 //电台: https://y.qq.com/portal/player_radio.html#id=99
 //热门搜索显示：https://c.y.qq.com/soso/fcgi-bin/search_for_qq_cp?g_tk=292689510&uin=729815936&format=json&inCharset=utf-8&outCharset=utf-8&notice=0&platform=h5&needNewCode=1&w=%E5%90%8C%E4%B8%80%E7%A7%92%E5%BF%AB%E4%B9%90+TFBOYS&zhidaqu=1&catZhida=1&t=0&flag=1&ie=utf-8&sem=1&aggr=0&perpage=20&n=20&p=1&remoteplace=txt.mqq.all&_=1499066029186
+//开机广告： https://mi.gdt.qq.com/gdt_mview.fcg?posw=640&posid=8935418777110959311&ext=%7B%22req%22%3A%7B%22jsver%22%3A%220%22%2C%22sdk_src%22%3A%22LiteSDK%22%2C%22muidtype%22%3A2%2C%22m5%22%3A%22D7CF109B-F500-4569-B2EB-AA4B4C9630CA%22%2C%22c_device%22%3A%22UnknownDevice_iPhone9%2C1%22%2C%22c_h%22%3A1334%2C%22hostver%22%3A%2244021%22%2C%22muid%22%3A%225def849504ecd30db6a929eb5df8999f%22%2C%22c_pkgname%22%3A%22com.tencent.QQMusic%22%2C%22hosttype%22%3A%22com.tencent.QQMusic%22%2C%22c_os%22%3A%22ios%22%2C%22taglist%22%3A%22%22%2C%22conn%22%3A1%2C%22c_devicetype%22%3A1%2C%22c_w%22%3A750%2C%22carrier%22%3A2%2C%22c_ori%22%3A0%2C%22c_dpi%22%3A320%2C%22sdkver%22%3A%225.7%22%2C%22postype%22%3A1%2C%22uin%22%3A%22729815936%22%2C%22tmpallpt%22%3A%22true%22%2C%22c_osver%22%3A%2210.3%22%7D%7D&count=1&posh=100&datatype=2&r=1957086113&adposcount=1&supportHttps=1
+//https://mi.gdt.qq.com/gdt_mview.fcg?posw=750&posid=8719245994997175503&ext=%7B%22req%22%3A%7B%22jsver%22%3A%220%22%2C%22sdk_src%22%3A%22LiteSDK%22%2C%22muidtype%22%3A2%2C%22m5%22%3A%22D7CF109B-F500-4569-B2EB-AA4B4C9630CA%22%2C%22c_device%22%3A%22UnknownDevice_iPhone9%2C1%22%2C%22c_h%22%3A1334%2C%22hostver%22%3A%2244021%22%2C%22muid%22%3A%225def849504ecd30db6a929eb5df8999f%22%2C%22c_pkgname%22%3A%22com.tencent.QQMusic%22%2C%22hosttype%22%3A%22com.tencent.QQMusic%22%2C%22c_os%22%3A%22ios%22%2C%22taglist%22%3A%22%22%2C%22conn%22%3A1%2C%22c_devicetype%22%3A1%2C%22c_w%22%3A750%2C%22carrier%22%3A2%2C%22c_ori%22%3A0%2C%22c_dpi%22%3A320%2C%22sdkver%22%3A%225.7%22%2C%22postype%22%3A4%2C%22uin%22%3A%22729815936%22%2C%22tmpallpt%22%3A%22true%22%2C%22c_osver%22%3A%2210.3%22%7D%7D&count=1&posh=1334&datatype=2&r=3242686558&adposcount=1&supportHttps=1
+//客户端配置：https://y.qq.com/m/client/config/url.json?r=16842
 import Vue from 'vue'
 import App from './App'
 import router from './router'
@@ -26,6 +29,19 @@ import store from './store/store'
 
 Vue.use(axios)
 Vue.prototype.Axios = axios
+Vue.prototype.shorten = function (num, fix) {
+    var n = num>0 ? num : -num;
+    fix==null && (fix = 1);
+    //1万以内
+    if (n<1E4) {
+      return String(num);
+    }
+    //1亿以内
+    if (n<1E8) {
+      return (num/1E4).toFixed(fix)+'万';
+    }
+    return (num/1E8).toFixed(fix)+'亿';
+}
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
