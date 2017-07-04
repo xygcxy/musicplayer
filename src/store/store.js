@@ -6,7 +6,9 @@ import mutations from './mutation'
 vue.use(vuex);
 export default new vuex.Store({
     state: {
-        searchkey: ''
+        searchkey: '',
+        src: '',
+        isPlay: false,
     },
     actions,
     mutations,

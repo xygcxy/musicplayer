@@ -28,11 +28,15 @@ export default {
         showFooter: true,
         isPlay: '',
         picUrl: '',
-        src: '',
         name: '',
         singerName: '',
         avatarShow: true,
         avatar1Show: true
+    }
+  },
+  computed: {
+    src () {
+      return this.$store.state.src
     }
   },
   components: {
@@ -40,8 +44,24 @@ export default {
   },
   methods: {
       play () {
-
-      },
+      this.$store.state.isPlay = !this.$store.state.isPlay
+      var play = document.querySelector('.audio')
+      // var p = document.querySelector('.avatar1')
+      var p = document.querySelector('.avatar')
+      if(!this.$store.state.isPlay) {
+        play.pause()
+        this.$store.state.avatar1Show = false
+        this.$store.state.avatarShow = true
+        this.$store.state.rotImg1Show = false
+        this.$store.state.rotImgShow = true
+      }else {
+        play.play()
+        this.$store.state.avatarShow = false
+        this.$store.state.avatar1Show = true
+        this.$store.state.rotImg1Show = true
+        this.$store.state.rotImgShow = false
+      }
+    },
   }
 }
 </script>
@@ -52,8 +72,6 @@ export default {
   // padding: 0;
   text-decoration: none;
   font-family: Tahoma;
-}
-html{
 }
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

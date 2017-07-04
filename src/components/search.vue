@@ -9,7 +9,7 @@
     </div>
     <div id="search_result" class="mod_search_content">
         <ul class="search_content">
-        <li data-limit="" :data-songmid="item.songid" v-for="item in reslist" :key="item.id">
+        <li data-limit="" :data-songmid="item.songid" v-for="item in reslist" :key="item.id" @click="playing(item.songid)">
         <i class="icon "></i>
         <h6 class="main_tit">{{item.songname}}</h6>
         <span class="sub_tit" v-for="list in item.singerlist" :key="list.id">{{list.singer}}</span>
@@ -81,6 +81,31 @@ export default {
                             singerid: item.id || ''
                         }))
                     }));
+                    // this.specialname = res.data.data.data.special_key;
+                    // this.specialurl = res.data.data.data.special_url;
+                    // console.log(res.data.data.songList);
+                }
+            })
+            .catch(function(err){
+                console.log(err);
+        });
+      },
+      playing(id) {
+          this.Axios.get('http://localhost:3001/api/get/song/qq?id='+id)
+            .then(res => {
+                // this.searchkey = item;
+                // this.$store.commit('getsearchkey', item)
+                if (res.status == 200) {
+                    this.$store.state.src = res.data.data.url;
+                    //搜索
+                    // this.reslist = res.data.data.songList.map((item, index) => ({
+                    //     songname: item.name,
+                    //     songid: item.id,
+                    //     singerlist: item.artists.map((item, index) => ({
+                    //         singer: item.name || '',
+                    //         singerid: item.id || ''
+                    //     }))
+                    // }));
                     // this.specialname = res.data.data.data.special_key;
                     // this.specialurl = res.data.data.data.special_url;
                     // console.log(res.data.data.songList);
