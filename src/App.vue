@@ -1,15 +1,15 @@
 <template>
   <div id="app">
-    <v-index></v-index>
+    <v-index ref="showheaderef"></v-index>
     <!--<img src="./assets/logo.png">-->
     <keep-alive><router-view></router-view></keep-alive>
     <div class="footer" v-show="showFooter">
-      <router-link to="/play">
-        <img :src="picUrl" alt="" class="avatar" v-show="avatarShow" >
-        <img :src="picUrl" alt="" class="avatar1" v-show="avatar1Show" >
+      <router-link to="/play" v-on:click.native="showhf">
+        <img :src="cover" alt="" class="avatar" v-show="avatarShow" >
+        <img :src="cover" alt="" class="avatar1" v-show="avatar1Show" >
         <div class="Name">
-        <p class="name">{{name}}</p><br>
-        <small class="singerName">{{singerName}}</small>
+        <p class="name">{{songname}}</p>
+        <small class="singerName">{{singer}}</small>
         </div>
         </router-link>
         <audio :src="src" class="audio" v-bind:autoplay="isPlay" loop></audio>
@@ -25,18 +25,31 @@ export default {
   name: 'app',
   data () {
     return {
-        showFooter: true,
+        // showFooter: true,
         isPlay: '',
         picUrl: '',
-        name: '',
-        singerName: '',
         avatarShow: true,
-        avatar1Show: true
+        avatar1Show: false
     }
   },
   computed: {
     src () {
       return this.$store.state.src
+    },
+    songname () {
+      return this.$store.state.songname
+    },
+    singer () {
+      return this.$store.state.singer
+    },
+    cover () {
+      return this.$store.state.cover
+    },
+    showFooter () {
+      return this.$store.state.showFooter;
+    },
+    isshow () {
+      return this.$store.state.isshow;
     }
   },
   components: {
@@ -62,7 +75,14 @@ export default {
         this.$store.state.rotImgShow = false
       }
     },
-  }
+    showhf () {
+      if (this.$store.state.songname) {
+        this.$store.state.showFooter = false;
+        this.$refs.showheaderef.showheader = false;
+        // this.$refs.showheaderef.show('false');
+      }
+    }
+  },
 }
 </script>
 
@@ -87,8 +107,9 @@ export default {
     bottom: 0;
     left: 0;
     right: 0;
+    border-top: 1px solid #ededed;
     height: 4rem;
-    background-color: #ededed;
+    background-color: #fff;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -97,12 +118,47 @@ export default {
       position: absolute;
       width: 2.5rem;
       height: 2.5rem;
-      right: 2rem;
+      // right: 2rem;
       top: 0.7rem;
     }
 }
 body {
   margin: 0;
+}
+.avatar{
+  position: fixed;
+  width: 8rem;
+  height: 8rem;
+  left: 1rem;
+  border-radius: 50%;
+}
+.avatar1{
+  position: fixed;
+  width: 8rem;
+  height: 8rem;
+  border-radius: 50%;
+  animation: rotate 10s linear infinite ;
+  -webkit-animation: rotate 10s linear infinite;
+  transform-origin: center center;
+}
+.Name{
+  color: #000000;
+  margin-left: 4rem; 
+  text-align: left;
+  /*text-decoration: none; */
+}
+.footer .img,.img1{
+  width: 3rem;
+  height: 3rem;
+  right: 1rem;
+  top: 0.5rem;
+}
+.name{
+  font-size: 1rem;
+  margin: 0;
+}
+.singerName{
+  font-size: 0.8rem;
 }
 
 </style>

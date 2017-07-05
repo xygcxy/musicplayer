@@ -1,6 +1,6 @@
 <template>
 <div>
-        <div class="header" :class="{'showheader': isshow }">
+        <div class="header" :class="{'showheader': isshow }" v-show="showheader">
             <div class="top">
                 <div class="left-icon">
                     <img src="../assets/icons/xian.png" @click="toggleSiderbar">
@@ -91,6 +91,7 @@ export default {
         showsider: false,
         isshow: false,
         issider: false,
+        showheader: true,
         showsearchicon: true,
         searchname: '搜索',
         // searchkey: '',

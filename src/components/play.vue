@@ -8,15 +8,15 @@
         <a href="">
           <img src="" alt="">
         </a>
-        <p>我的歌</p>
+        <p>{{songname}}</p>
         <a href=""></a>
       </div>
       <div class="t-small">
-        <small>——我的歌——</small>
+        <small>——{{singer}}——</small>
       </div>
         <div class="rot">
-            <img :src="picUrl" alt="" class="rotImg" v-show="rotImgShow">
-            <img :src="picUrl" alt="" class="rotImg1" v-show="rotImg1Show">
+            <img :src="cover" alt="" class="rotImg" v-show="rotImgShow">
+            <img :src="cover" alt="" class="rotImg1" v-show="rotImg1Show">
         </div>
       </div>
     </div>
@@ -24,7 +24,28 @@
 
 <script>
 export default {
-  
+  data () {
+    return {
+
+    }
+  },
+  computed: {
+    songname () {
+      return this.$store.state.songname
+    },
+    singer () {
+      return this.$store.state.singer
+    },
+    cover () {
+      return this.$store.state.cover
+    },
+    showFooter () {
+      return this.$store.state.showFooter;
+    },
+    isshow () {
+      return this.$store.state.isshow;
+    }
+  }
 }
 </script>
 

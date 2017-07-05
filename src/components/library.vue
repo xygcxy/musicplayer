@@ -281,11 +281,6 @@ export default {
 .icon-s {
     right: 2.5rem;
 }
-.hot-recommend {
-    span {
-
-    }
-}
 .rec-title {
     font-size: 1.1rem;
 }
