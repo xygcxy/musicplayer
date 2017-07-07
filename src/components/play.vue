@@ -4,6 +4,7 @@
       <div class="bg-img">
         <img src="" alt="">
       </div>
+      <div class="bgmask" style="opacity:0.6"></div>
       <div class="title">
         <a href="">
           <img src="" alt="">
@@ -66,5 +67,26 @@ export default {
     -ms-flex-pack: center;
     justify-content: center;
 }
+.bg-img {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    background-size: cover;
+    background-position: bottom center;
+}
+.bgmask{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+    width: 100%;
+    background-color: #000;
+}
 </style>
+
+
 
