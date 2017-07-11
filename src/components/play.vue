@@ -117,7 +117,7 @@ export default {
     background-size: cover;
     background-position: bottom center;
     -webkit-filter: blur(15px);
-    -webkit-transform: scale(1.15);
+    // -webkit-transform: scale(1.15);
 }
 .bgmask{
     position: absolute;
@@ -133,6 +133,44 @@ export default {
   height: 15rem;
   border-radius: 50%;
   z-index: 33;
+}
+.control {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 3;
+    width: 100%;
+    height: 154px;
+}
+.progress {
+    position: absolute;
+    bottom: 74px;
+    width: 100%;
+    height: 40px;
+}
+.progress--no_dot {
+    right: 55px;
+}
+.progress__bar {
+    position: absolute;
+    top: 0;
+    left: 55px;
+    right: 47px;
+    height: 40px;
+    overflow: hidden;
+}
+.progress__bg {
+    left: 0;
+    z-index: 3;
+    background-color: rgba(0,0,0,.1);
+}
+
+.progress__bg, .progress__load, .progress__play {
+    position: absolute;
+    top: 19px;
+    width: 100%;
+    height: 2px;
+    -webkit-transition: all 1s linear;
 }
 </style>
 
