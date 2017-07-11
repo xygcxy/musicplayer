@@ -467,6 +467,22 @@ const getnewalbum = () => {
   });
 }
 
+const hotSearch = () => {
+  let url = `https://c.y.qq.com/splcloud/fcgi-bin/gethotkey.fcg?g_tk=292689510&uin=729815936&format=json&inCharset=utf-8&outCharset=utf-8&notice=0&platform=h5&needNewCode=1&_=1499064058029`;
+  return new Promise((resolve, reject) => {
+    fetch(url)
+      .then(res => res.text())
+      .then(text => {
+        let json = JSON.parse(text.substr(0, text.length - 1));
+        resolve(json);
+      })
+      .catch(err => reject({
+        success: false,
+        message: err
+      }))
+  });
+}
+
 module.exports = {
   searchSong: searchSong,
   searchPlaylist: searchPlaylist,
@@ -475,6 +491,7 @@ module.exports = {
   getTop: getTop,
   getHomeData: getHomeData,
   getAlbum: getAlbum,
+  hotSearch: hotSearch,
   getnewalbum: getnewalbum,
   getPlaylist: getPlaylist,
   searchSuggestion: searchSuggestion,

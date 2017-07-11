@@ -213,6 +213,10 @@ const getnewalbum = () => {
   return QQAPI.getnewalbum();
 }
 
+const hotSearch = () => {
+  return QQAPI.hotSearch();
+}
+
 const musicAPI = {
   searchSong: searchSong,
   searchAlbum: searchAlbum,
@@ -220,6 +224,7 @@ const musicAPI = {
   getSong: getSong,
   getTop: getTop,
   getAlbum: getAlbum,
+  hotSearch: hotSearch,
   getPlaylist: getPlaylist,
   getDailySuggest: getDailySuggest,
   getHomeData: getHomeData,
