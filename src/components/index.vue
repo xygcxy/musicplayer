@@ -68,8 +68,8 @@
                     <router-link to="/search">
                     <i class="return-icon" @click="returnheader"></i>
                     <div class="home-search" @click="isshowheader"> 
-                        <input type="text" class="default-input" :class="{'inputsearch': isshow }" :placeholder="searchname" :value="searchkey" >
-                        <a href="" class="btn-search">搜索</a>
+                        <input type="text" class="default-input" :class="{'inputsearch': isshow }" :placeholder="searchname" :value="searchkey" v-model="searchitem">
+                        <a @click="search()" class="btn-search">搜索</a>
                     <i class="search-icon" v-show="showsearchicon"></i></div>
                     </router-link>
                 </div>
@@ -94,6 +94,7 @@ export default {
         showheader: true,
         showsearchicon: true,
         searchname: '搜索',
+        searchitem: '',
         // searchkey: '',
     }
   },
@@ -116,11 +117,43 @@ export default {
           this.searchname = '搜索';
           this.$store.commit('getsearchkey', '');
           this.$router.go(-1);
+          this.$store.state.reslist = '';
+      },
+      search () {
+            var key = this.searchitem || '';
+            this.Axios.get('http://localhost:3001/api/search/song/qq?key='+key)
+            .then(res => {
+                // this.searchkey = item;
+                // this.hotsearch = false;
+                // this.$store.commit('getsearchkey', item)
+                if (res.status == 200) {
+                    //搜索
+                    var reslist = res.data.data.songList.map((item, index) => ({
+                        songname: item.name,
+                        songid: item.id,
+                        album: item.album,
+                        singerlist: item.artists.map((item, index) => ({
+                            singer: item.name || '',
+                            singerid: item.id || ''
+                        }))
+                    }));
+                    // this.specialname = res.data.data.data.special_key;
+                    // this.specialurl = res.data.data.data.special_url;
+                    // console.log(res.data.data.songList);
+                    this.$store.state.reslist = reslist;
+                }
+            })
+            .catch(function(err){
+                console.log(err);
+        });
       }
   },
-  computed: mapGetters({
+  computed: {
+      ...mapGetters({
            searchkey:'getsearchkey'
-    })
+    }),
+
+  }
 }
 </script>
 

@@ -12,6 +12,8 @@ export default new vuex.Store({
         songname: '',
         singer: '',
         cover: '',
+        coversmall: '',
+        reslist: '',
         isshow: true,
         showFooter: true,
     },

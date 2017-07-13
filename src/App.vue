@@ -43,7 +43,7 @@ export default {
       return this.$store.state.singer
     },
     cover () {
-      return this.$store.state.cover
+      return this.$store.state.coversmall
     },
     showFooter () {
       return this.$store.state.showFooter;

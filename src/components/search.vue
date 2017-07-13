@@ -33,7 +33,7 @@ export default {
           specialname: '',
           specialurl: '',
           hotsearch: true,
-          reslist: '',
+        //   reslist: '',
           singerlist: '',
         //   searchkey: ''
       }
@@ -46,6 +46,9 @@ export default {
         ...mapState({
             searchkey: state => state.searchkey
         }),
+        reslist () {
+            return this.$store.state.reslist
+        }
     },
   methods: {
       searchrequest (){
@@ -73,7 +76,7 @@ export default {
                 this.$store.commit('getsearchkey', item)
                 if (res.status == 200) {
                     //搜索
-                    this.reslist = res.data.data.songList.map((item, index) => ({
+                    var reslist = res.data.data.songList.map((item, index) => ({
                         songname: item.name,
                         songid: item.id,
                         album: item.album,
@@ -82,6 +85,7 @@ export default {
                             singerid: item.id || ''
                         }))
                     }));
+                    this.$store.state.reslist = reslist;
                     // this.specialname = res.data.data.data.special_key;
                     // this.specialurl = res.data.data.data.special_url;
                     // console.log(res.data.data.songList);
@@ -100,7 +104,8 @@ export default {
                     this.$store.state.src = res.data.data.url;
                     this.$store.state.songname = songname;
                     this.$store.state.singer = singer;
-                    this.$store.state.cover = album.coverSmall;
+                    this.$store.state.coversmall = album.coverSmall;
+                    this.$store.state.cover = album.cover;
                     //搜索
                     // this.reslist = res.data.data.songList.map((item, index) => ({
                     //     songname: item.name,

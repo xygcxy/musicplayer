@@ -2,9 +2,7 @@
   <div>
     <div class="playing">
       <div class="title">
-        <a href="">
-          <img src="" alt="">
-        </a>
+        <a href="" class="mini"></a>
         <p>{{songname}}</p>
         <a href=""></a>
       </div>
@@ -23,13 +21,6 @@
 			</a>
 		</div>
 
-		<div class="operate operate--right">
-
-			<a class="operate__item js-like" href="javascript:;">
-				<i class="icon_like">喜欢</i>
-			</a>
-		</div>
-
 
 		<div class="progress">
 			<!-- 无拖动点 增加progress--no_dot -->
@@ -45,7 +36,15 @@
 			<span class="progress__end js-time-total">04:36</span>
 		</div>
 
-      <div class="btns">
+      
+      <a class="icon_play js-play" href="javascript:;"></a>
+      <div class="operate operate--right">
+
+			<a class="operate__item js-like" href="javascript:;">
+				<i class="icon_like">喜欢</i>
+			</a>
+		</div>
+    <div class="btns">
         <a class="btn_download js-download" href="javascript:;">下载这首歌</a>
       </div>
     </div>
@@ -94,8 +93,20 @@ export default {
   top: 10rem;
 
 }
-.playing {
+.playing{
+  position: absolute;
   z-index: 30;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+}
+.title {
+  p {color: #fff;}
+}
+.t-small {
+  small {
+    color: #fff;
+  }
 }
 .rot, .small {
     width: 100%;
@@ -144,7 +155,7 @@ export default {
 }
 .progress {
     position: absolute;
-    bottom: 74px;
+    bottom: 7rem;
     width: 100%;
     height: 40px;
 }
@@ -171,6 +182,61 @@ export default {
     width: 100%;
     height: 2px;
     -webkit-transition: all 1s linear;
+}
+.progress__load {
+    left: -100%;
+    z-index: 4;
+    background-color: rgba(255,255,255,.2);
+}
+a, a:hover {
+    text-decoration: none;
+}
+.icon_play {
+    position: absolute;
+    right: 43%;
+    width: 3rem;
+    height: 3rem;
+    bottom: 4rem;
+    border: solid 1px #fff;
+    border-radius: 999px;
+    background: rgba(0,0,0,.1);
+    opacity: .6;
+}
+.icon_play::after, .btn_download::before, .tips.success p::before {
+    background-image: url('../assets/icons/sprite_play.png');
+    background-repeat: no-repeat;
+    background-size: 40px 350px;
+}
+.mini {
+    z-index: 33;
+    background-image: url('../assets/icons/jiantou.png');
+    background-size: cover;
+    width: 2rem;
+    height: 2rem;
+    position: absolute;
+    top: 0.7rem;
+    left: 1rem;
+}
+.icon_play::after {
+    content: "";
+    display: block;
+    width: 17px;
+    height: 19px;
+    margin: 15px 0 0 18px;
+    background-position: 0 -150px;
+}
+.operate--right {
+    left: 2rem;
+}
+.operate {
+    position: absolute;
+    bottom: 2rem;
+    overflow: hidden;
+}
+.btns {
+    position: absolute;
+    bottom: 2rem;
+    left: 5rem;
 }
 </style>
 
