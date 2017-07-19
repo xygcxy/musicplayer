@@ -26,7 +26,6 @@ export default {
   data () {
     return {
         // showFooter: true,
-        isPlay: '',
         picUrl: '',
         avatarShow: true,
         avatar1Show: false
@@ -50,6 +49,9 @@ export default {
     },
     isshow () {
       return this.$store.state.isshow;
+    },
+    isPlay () {
+      return this.$store.state.isPlay;
     }
   },
   components: {
@@ -147,7 +149,7 @@ body {
   text-align: left;
   /*text-decoration: none; */
 }
-.footer .img,.img1{
+.footer .img,.footer .img1{
   width: 3rem;
   height: 3rem;
   right: 1rem;

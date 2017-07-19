@@ -174,6 +174,7 @@ const searchSong = (key, limit, page, raw) => {
                 artists: item.singer.map(i => {return {id: i.mid, name: i.name}; }),
                 name: item.songname,
                 id: item.songmid,
+                interval: item.interval,
                 needPay: item.pay.payplay > 0 ? true : false,
               };
             });

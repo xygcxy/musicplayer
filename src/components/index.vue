@@ -91,7 +91,6 @@ export default {
         showsider: false,
         isshow: false,
         issider: false,
-        showheader: true,
         showsearchicon: true,
         searchname: '搜索',
         searchitem: '',
@@ -118,41 +117,48 @@ export default {
           this.$store.commit('getsearchkey', '');
           this.$router.go(-1);
           this.$store.state.reslist = '';
+          this.$store.state.hotsearch = true;
       },
       search () {
             var key = this.searchitem || '';
-            this.Axios.get('http://localhost:3001/api/search/song/qq?key='+key)
-            .then(res => {
-                // this.searchkey = item;
-                // this.hotsearch = false;
-                // this.$store.commit('getsearchkey', item)
-                if (res.status == 200) {
-                    //搜索
-                    var reslist = res.data.data.songList.map((item, index) => ({
-                        songname: item.name,
-                        songid: item.id,
-                        album: item.album,
-                        singerlist: item.artists.map((item, index) => ({
-                            singer: item.name || '',
-                            singerid: item.id || ''
-                        }))
-                    }));
-                    // this.specialname = res.data.data.data.special_key;
-                    // this.specialurl = res.data.data.data.special_url;
-                    // console.log(res.data.data.songList);
-                    this.$store.state.reslist = reslist;
-                }
-            })
-            .catch(function(err){
-                console.log(err);
-        });
+            if (key) {
+                this.Axios.get('http://localhost:3001/api/search/song/qq?key='+key)
+                .then(res => {
+                    this.$store.state.hotsearch = false;
+                    // this.searchkey = item;
+                    // this.hotsearch = false;
+                    // this.$store.commit('getsearchkey', item)
+                    if (res.status == 200) {
+                        //搜索
+                        var reslist = res.data.data.songList.map((item, index) => ({
+                            songname: item.name,
+                            songid: item.id,
+                            album: item.album,
+                            singerlist: item.artists.map((item, index) => ({
+                                singer: item.name || '',
+                                singerid: item.id || ''
+                            }))
+                        }));
+                        // this.specialname = res.data.data.data.special_key;
+                        // this.specialurl = res.data.data.data.special_url;
+                        // console.log(res.data.data.songList);
+                        this.$store.state.reslist = reslist;
+                    }
+                })
+                .catch(function(err){
+                    console.log(err);
+            });
+            }
+            
       }
   },
   computed: {
       ...mapGetters({
            searchkey:'getsearchkey'
     }),
-
+    showheader () {
+        return this.$store.state.showheader;
+    }
   }
 }
 </script>

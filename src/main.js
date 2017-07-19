@@ -43,6 +43,13 @@ Vue.prototype.shorten = function (num, fix) {
     }
     return (num/1E8).toFixed(fix)+'亿';
 }
+Vue.prototype.formatVideoDuration = function (duration) {
+		duration = parseInt(duration, 10) || 0;
+		var h = Math.floor(duration / 3600),
+			m = Math.floor((duration % 3600) / 60),
+			s = duration % 60;
+		return (h ? h+':' : '')+(m>9 ? m : '0'+m)+':'+(s>9 ? s : '0'+s);
+}
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="playing">
+    <div class="playing" >
       <div class="title">
-        <a href="" class="mini"></a>
+        <a class="mini" @click="mini"></a>
         <p>{{songname}}</p>
         <a href=""></a>
       </div>
@@ -10,8 +10,7 @@
         <small>—— {{singer}} ——</small>
       </div>
         <div class="rot">
-            <img :src="cover" alt="" class="rotImg" v-show="rotImgShow">
-            <img :src="cover" alt="" class="rotImg1" v-show="rotImg1Show">
+            <img :src="cover" alt="" class="rotImg" v-show="rotImgShow" :class="{'pauseplay': !pause, 'continueplay': pause}">
         </div>
         
     <div class="control">
@@ -33,11 +32,11 @@
 				</div>
 			</div>
 			<span class="progress__start js-time-start">00:00</span>
-			<span class="progress__end js-time-total">04:36</span>
+			<span class="progress__end js-time-total">{{interval}}</span>
 		</div>
 
       
-      <a class="icon_play js-play" href="javascript:;"></a>
+      <a class="icon_play js-play" href="javascript:;" @click="play" :class="{'btn-pause': !pause}"></a>
       <div class="operate operate--right">
 
 			<a class="operate__item js-like" href="javascript:;">
@@ -61,7 +60,7 @@ export default {
   data () {
     return {
       coverimg: '',
-      rotImgShow: true
+      rotImgShow: true,
     }
   },
   computed: {
@@ -80,6 +79,43 @@ export default {
     },
     isshow () {
       return this.$store.state.isshow;
+    },
+    pause () {
+      return this.$store.state.isPlay;
+    },
+    interval () {
+      var songtime = this.formatVideoDuration(this.$store.state.interval);
+      return songtime;
+    }
+    // showplay () {
+    //   return this.$store.state.showplay;
+    // }
+  },
+  methods: {
+    play () {
+      this.pause = !this.pause;
+      this.$store.state.isPlay = !this.$store.state.isPlay
+      var play = document.querySelector('.audio')
+      // var p = document.querySelector('.avatar1')
+      var p = document.querySelector('.avatar')
+      if(!this.$store.state.isPlay) {
+        play.pause()
+        // this.$store.state.avatar1Show = false
+        // this.$store.state.avatarShow = true
+        // this.$store.state.rotImg1Show = false
+        // this.$store.state.rotImgShow = true
+      }else {
+        play.play()
+        // this.$store.state.avatarShow = false
+        // this.$store.state.avatar1Show = true
+        // this.$store.state.rotImg1Show = true
+        // this.$store.state.rotImgShow = false
+      }
+    },
+    mini () {
+      this.$router.go(-1);
+      this.$store.state.showFooter = true;
+      // this.$store.state.showplay = false;
     }
   }
 }
@@ -108,7 +144,7 @@ export default {
     color: #fff;
   }
 }
-.rot, .small {
+.rot{
     width: 100%;
     position: absolute;
     display: -webkit-box;
@@ -211,19 +247,56 @@ a, a:hover {
     z-index: 33;
     background-image: url('../assets/icons/jiantou.png');
     background-size: cover;
-    width: 2rem;
-    height: 2rem;
+    width: 1.5rem;
+    height: 1.5rem;
     position: absolute;
-    top: 0.7rem;
+    top: 0.9rem;
     left: 1rem;
+}
+.btn_download::before, .btn_qrcode::after, .download_bar__logo, .download_bar__tit, .icon_bgmusic, .icon_kg, .icon_like, .icon_mv, .icon_play::after, .icon_play_list, .icon_translate, .progress__dot::before, .tips.success p::before {
+    background-image: url('../assets/icons/sprite_play_v2.png');
+    background-repeat: no-repeat;
+    background-size: 70px;
+}
+.progress__dot::before {
+    content: "";
+    display: block;
+    width: 16px;
+    height: 16px;
+    margin: 12px auto;
+    background-position: -40px -30px;
 }
 .icon_play::after {
     content: "";
     display: block;
     width: 17px;
     height: 19px;
-    margin: 15px 0 0 18px;
+    margin: 17px 0 0 19px;
+    background-position: 0 -180px;
+}
+.progress__play {
+    left: -100%;
+    z-index: 5;
+    width: 100%;
+    background-color: #31c27c;
+}
+.progress__bg, .progress__load, .progress__play {
+    position: absolute;
+    top: 19px;
+    width: 100%;
+    height: 2px;
+    -webkit-transition: all 1s linear;
+}
+.progress__dot {
+    position: absolute;
+    top: -19px;
+    right: -28px;
+    width: 40px;
+    height: 40px;
+}
+.btn-pause::after {
     background-position: 0 -150px;
+    margin: 15px 0 0 18px;
 }
 .operate--right {
     left: 2rem;
@@ -237,6 +310,27 @@ a, a:hover {
     position: absolute;
     bottom: 2rem;
     left: 5rem;
+}
+@keyframes rotatecover
+{
+0%   {transform:rotateZ(0deg);}
+100% {transform:rotateZ(360deg);}
+}
+.rotImg {
+    -webkit-transform:translate3d(0,0,0);
+    -moz-transform:translate3d(0,0,0);
+    transform:translate3d(0,0,0);
+    -webkit-animation:rotatecover 28s linear infinite;
+    -moz-animation:rotatecover 28s linear infinite;
+    animation:rotatecover 28s linear infinite;
+}
+.pauseplay {
+  animation-play-state:paused;
+  -webkit-animation-play-state:paused; 
+}
+.continueplay {
+  animation-play-state:running;
+  -webkit-animation-play-state:running;
 }
 </style>
 
