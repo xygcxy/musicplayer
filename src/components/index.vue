@@ -68,7 +68,7 @@
                     <router-link to="/search">
                     <i class="return-icon" @click="returnheader"></i>
                     <div class="home-search" @click="isshowheader"> 
-                        <input type="text" class="default-input" :class="{'inputsearch': isshow }" :placeholder="searchname" :value="searchkey" v-model="searchitem">
+                        <input type="text" class="default-input" :class="{'inputsearch': isshow }" :placeholder="searchname" :value="searchkey" v-model="searchitem" @keyup.enter="search()">
                         <a @click="search()" class="btn-search">搜索</a>
                     <i class="search-icon" v-show="showsearchicon"></i></div>
                     </router-link>
@@ -134,6 +134,7 @@ export default {
                             songname: item.name,
                             songid: item.id,
                             album: item.album,
+                            interval: item.interval,
                             singerlist: item.artists.map((item, index) => ({
                                 singer: item.name || '',
                                 singerid: item.id || ''

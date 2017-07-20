@@ -3,7 +3,7 @@
     <div class="loading" v-show="loading"><img src="../assets/icons/loading.gif" alt=""></div>
   <div class="library">
       <div class="banner">
-      <swiper loop auto :list="focuslist"  dots-position="center" interval="8000" aspect-ratio="0.38"></swiper>
+      <swiper loop auto :list="focuslist"  dots-position="center" :interval="interval" :aspect-ratio="aspectratio"></swiper>
       </div>
       <div class="lib-content">
           <div class="lib-section">
@@ -164,11 +164,13 @@ export default {
   },
   data () {
     return {
-      focuslist: '',
+      focuslist: [],
       hotlist: '',
       mvlist: '',
       newsongreclist: '',
       loading: false,
+      interval: 8000,
+      aspectratio: 0.38
     }
   },
   methods: {

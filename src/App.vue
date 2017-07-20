@@ -4,7 +4,7 @@
     <!--<img src="./assets/logo.png">-->
     <keep-alive><router-view></router-view></keep-alive>
     <div class="footer" v-show="showFooter">
-      <router-link to="/play" v-on:click.native="showhf">
+      <router-link to="/play" v-on:click.native="showhf" v-show="showfootplay">
         <img :src="cover" alt="" class="avatar" v-show="avatarShow" >
         <img :src="cover" alt="" class="avatar1" v-show="avatar1Show" >
         <div class="Name">
@@ -12,6 +12,7 @@
         <small class="singerName">{{singer}}</small>
         </div>
         </router-link>
+        <p v-show="!showfootplay" class="nosong">QQ音乐 听我想听的歌</p>
         <audio :src="src" class="audio" v-bind:autoplay="isPlay" loop></audio>
         <img class="img" src="./assets/icons/pause.png" alt="" @click="play" v-show="!isPlay">
         <img class="img1" src="./assets/icons/play.png" alt="" @click="play" v-show="isPlay" >
@@ -52,6 +53,11 @@ export default {
     },
     isPlay () {
       return this.$store.state.isPlay;
+    },
+    showfootplay () {
+      if (this.$store.state.songname) {
+        return this.$store.state.showfootplay;
+      }
     }
   },
   components: {
@@ -81,6 +87,7 @@ export default {
       if (this.$store.state.songname) {
         this.$store.state.showFooter = false;
         this.$refs.showheaderef.showheader = false;
+        this.$store.state.showfootplay = true;
         // this.$refs.showheaderef.show('false');
       }
     }
@@ -161,6 +168,10 @@ body {
 }
 .singerName{
   font-size: 0.8rem;
+}
+.nosong {
+  padding-left: 1rem;
+  font-size: 0.9rem;
 }
 
 </style>

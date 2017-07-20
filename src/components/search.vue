@@ -7,9 +7,9 @@
         <a :href="specialurl" class="special-k">{{specialname}}</a>
         <a @click="search(item.name)" v-for="item in searchlist" :key="item.id" class="normal-k" >{{item.name}}</a></div>
     </div>
-    <div id="search_result" class="mod_search_content">
+    <div id="search_result" class="mod_search_content" ref="viewBox">
         <ul class="search_content">
-        <li data-limit="" :data-songmid="item.songid" v-for="item in reslist" :key="item.id" @click="playing(item.songid, item.songname, item.singerlist[0].singer, item.album, item.interval)">
+        <li data-limit="" :data-songmid="item.songid" v-for="item in reslist" :key="item.id" @click="playing(item.songid, item.songname, item.singerlist[0].singer, item.interval, item.album)">
         <i class="icon "></i>
         <h6 class="main_tit">{{item.songname}}</h6>
         <span class="sub_tit" v-for="list in item.singerlist" :key="list.id">{{list.singer}}</span>
@@ -35,6 +35,7 @@ export default {
         //   hotsearch: true,
         //   reslist: '',
           singerlist: '',
+          scrolled: false
         //   searchkey: ''
       }
   },
@@ -51,7 +52,10 @@ export default {
         },
         hotsearch () {
             return this.$store.state.hotsearch
-        }
+        },
+    },
+    mounted () {
+        window.addEventListener('scroll', this.handleScroll);
     },
   methods: {
       searchrequest (){
@@ -72,7 +76,8 @@ export default {
         });
       },
       search(item) {
-          this.Axios.get('http://localhost:3001/api/search/song/qq?key='+item)
+          var page = page || 0;
+          this.Axios.get('http://localhost:3001/api/search/song/qq?key='+item+'&='+page)
             .then(res => {
                 // this.searchkey = item;
                 this.$store.state.hotsearch = false;
@@ -99,7 +104,7 @@ export default {
                 console.log(err);
         });
       },
-      playing(id, songname, singer, album, interval) {
+      playing(id, songname, singer, interval, album) {
           this.Axios.get('http://localhost:3001/api/get/song/qq?id='+id)
             .then(res => {
                 // this.searchkey = item;
@@ -112,6 +117,7 @@ export default {
                     this.$store.state.cover = album.cover;
                     this.$store.state.showplay = true;
                     this.$store.state.isPlay = true;
+                    this.$store.state.showfootplay = true;
                     this.$store.state.interval = interval;
                     //搜索
                     // this.reslist = res.data.data.songList.map((item, index) => ({
@@ -130,8 +136,12 @@ export default {
             .catch(function(err){
                 console.log(err);
         });
+      },
+      handleScroll () {
+        this.scrolled = this.$refs.viewBox.scrollTop;
+        console.log(this.$refs.viewBox.scrollTop);
       }
-  }
+   }
 }
 </script>
 
@@ -173,6 +183,9 @@ h3{
 .mod_search_content {
     margin: 0;
     padding: 0;
+    position: absolute;
+    top: 4rem;
+    height: 50rem;
     ul {
         margin: 0;
         padding: 0;
