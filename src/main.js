@@ -50,6 +50,21 @@ Vue.prototype.formatVideoDuration = function (duration) {
 			s = duration % 60;
 		return (h ? h+':' : '')+(m>9 ? m : '0'+m)+':'+(s>9 ? s : '0'+s);
 }
+Vue.prototype.throttle = function (handle, delay, time) {
+  var timer = null;
+  var previous = new Date();
+
+  return function () {
+    var now = new Date();
+    if (time && (now - previous) >= time) {
+      handle();
+      previous = now;
+    } else {
+      clearTimeout(timer);
+      timer = setTimeout(handle, delay || 100);
+    }
+  }
+}
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

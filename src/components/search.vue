@@ -1,7 +1,7 @@
 <template>
 <div>
   <div class="search">
-    <div class="search-rec" v-show="hotsearch">
+    <div class="search-rec" v-show="hotsearch" >
         <h3>热门搜索</h3>
         <div class="rec-data">
         <a :href="specialurl" class="special-k">{{specialname}}</a>
@@ -13,10 +13,10 @@
         <i class="icon "></i>
         <h6 class="main_tit">{{item.songname}}</h6>
         <span class="sub_tit" v-for="list in item.singerlist" :key="list.id">{{list.singer}}</span>
-    </li> 
+        </li> 
     </ul>
     </div>
-    <div id="loading" class="mod_loading" style="display: none;">
+    <div id="loading" class="mod_loading" v-show="loadmore">
             <i class="loading__icon"></i>
             <span class="loading__text">正在载入更多...</span>
     </div>
@@ -35,7 +35,9 @@ export default {
         //   hotsearch: true,
         //   reslist: '',
           singerlist: '',
-          scrolled: false
+          scroll: '',
+          page: 1,
+          loadmore: false
         //   searchkey: ''
       }
   },
@@ -55,7 +57,10 @@ export default {
         },
     },
     mounted () {
-        window.addEventListener('scroll', this.handleScroll);
+        window.addEventListener('scroll', this.throttle(this.handleScroll));
+    },
+    watch: {
+        
     },
   methods: {
       searchrequest (){
@@ -76,8 +81,8 @@ export default {
         });
       },
       search(item) {
-          var page = page || 0;
-          this.Axios.get('http://localhost:3001/api/search/song/qq?key='+item+'&='+page)
+          var page = this.page = 1;
+          this.Axios.get('http://localhost:3001/api/search/song/qq?key='+item+'&page='+page)
             .then(res => {
                 // this.searchkey = item;
                 this.$store.state.hotsearch = false;
@@ -95,6 +100,8 @@ export default {
                         }))
                     }));
                     this.$store.state.reslist = reslist;
+                    this.page = this.page + 1;
+                    this.total = res.data.data.total;
                     // this.specialname = res.data.data.data.special_key;
                     // this.specialurl = res.data.data.data.special_url;
                     // console.log(res.data.data.songList);
@@ -138,9 +145,51 @@ export default {
         });
       },
       handleScroll () {
-        this.scrolled = this.$refs.viewBox.scrollTop;
-        console.log(this.$refs.viewBox.scrollTop);
-      }
+        this.scroll = document.body.scrollTop;
+        this.clientHeight = this.$store.state.clientHeight = this.$refs.viewBox.clientHeight;
+        this.scrollheight = document.body.scrollHeight;
+        if (this.$store.state.searchkey) {
+        var scroll = this.page == 2 && parseInt(this.scroll + this.clientHeight + 90) || parseInt(this.scroll - 550*(this.page-2) + this.clientHeight + 90);
+        if (parseInt(this.total/10) == this.page) {
+            this.loadmore = false;
+            return;
+        } else if (scroll >= parseInt(this.scrollheight)) {
+            var page = this.page;
+            var item = this.$store.state.searchkey;
+            this.loadmore = true;
+            setTimeout(() => {
+                this.Axios.get('http://localhost:3001/api/search/song/qq?key='+item+'&page='+page)
+                .then(res => {
+                    // this.searchkey = item;
+                    this.$store.commit('getsearchkey', item)
+                    if (res.status == 200) {
+                        //搜索
+                        var reslistmore = res.data.data.songList.map((item, index) => ({
+                            songname: item.name,
+                            songid: item.id,
+                            album: item.album,
+                            interval: item.interval,
+                            singerlist: item.artists.map((item, index) => ({
+                                singer: item.name || '',
+                                singerid: item.id || ''
+                            }))
+                        }));
+                        this.loadmore = false;
+                        var resmore = this.$store.state.reslist.concat(reslistmore);
+                        this.$store.state.reslist = resmore;
+                        this.page = this.page + 1;
+                        // this.specialname = res.data.data.data.special_key;
+                        // this.specialurl = res.data.data.data.special_url;
+                        // console.log(res.data.data.songList);
+                    }
+                })
+                .catch(function(err){
+                    console.log(err);
+            })
+            }, 1500)
+        }
+        }  
+      }       
    }
 }
 </script>
@@ -183,12 +232,16 @@ h3{
 .mod_search_content {
     margin: 0;
     padding: 0;
-    position: absolute;
-    top: 4rem;
-    height: 50rem;
+    // position: absolute;
+    position: relative;
+    height: 100%;
+    margin-bottom: 4rem;
+    overflow: scroll;
     ul {
         margin: 0;
         padding: 0;
+        // height: 100rem;
+        overflow-y: scroll;
     }
 }
 .mod_search_content li {
@@ -237,5 +290,9 @@ h3{
     left: 0;
     right: 0;
     background: #e5e5e5;
+}
+.mod_loading {
+    position: fixed;
+    bottom: 4rem;
 }
 </style>

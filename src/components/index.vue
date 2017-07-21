@@ -94,6 +94,7 @@ export default {
         showsearchicon: true,
         searchname: '搜索',
         searchitem: '',
+        page: 1,
         // searchkey: '',
     }
   },
@@ -101,6 +102,9 @@ export default {
     // 'v-user': user,
     // 'v-footer': footer
   },
+  mounted () {
+        window.addEventListener('scroll', this.throttle(this.loadMore));
+    },
   methods: {
       toggleSiderbar () {
           this.showsider = !this.showsider;
@@ -151,6 +155,53 @@ export default {
             });
             }
             
+      },
+      loadMore () {
+        this.scroll = document.body.scrollTop;
+        this.clientHeight = this.$store.state.clientHeight;
+        this.scrollheight = document.body.scrollHeight;
+    
+        if (this.searchitem) {
+        var scroll = this.page == 2 && parseInt(this.scroll + this.clientHeight + 90) || parseInt(this.scroll - 550*(this.page-2) + this.clientHeight + 90);
+        if (parseInt(this.total/10) == this.page) {
+            this.loadmore = false;
+            return;
+        } else if (scroll >= parseInt(this.scrollheight)) {
+            var page = this.page;
+            var item = this.$store.state.searchkey || '';
+            this.loadmore = true;
+            setTimeout(() => {
+                this.Axios.get('http://localhost:3001/api/search/song/qq?key='+this.searchitem+'&page='+page)
+                .then(res => {
+                    // this.searchkey = item;
+                    this.$store.commit('getsearchkey', item)
+                    if (res.status == 200) {
+                        //搜索
+                        var reslistmore = res.data.data.songList.map((item, index) => ({
+                            songname: item.name,
+                            songid: item.id,
+                            album: item.album,
+                            interval: item.interval,
+                            singerlist: item.artists.map((item, index) => ({
+                                singer: item.name || '',
+                                singerid: item.id || ''
+                            }))
+                        }));
+                        this.loadmore = false;
+                        var resmore = this.$store.state.reslist.concat(reslistmore);
+                        this.$store.state.reslist = resmore;
+                        this.page = this.page + 1;
+                        // this.specialname = res.data.data.data.special_key;
+                        // this.specialurl = res.data.data.data.special_url;
+                        // console.log(res.data.data.songList);
+                    }
+                })
+                .catch(function(err){
+                    console.log(err);
+            })
+            }, 1500)
+        }
+        }
       }
   },
   computed: {

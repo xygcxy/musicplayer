@@ -15,6 +15,7 @@ export default new vuex.Store({
         interval: '',
         coversmall: '',
         reslist: '',
+        clientHeight: '',
         showfootplay: false,
         showheader: true,
         isshow: true,
