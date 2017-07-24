@@ -103,7 +103,7 @@ export default {
     // 'v-footer': footer
   },
   mounted () {
-        window.addEventListener('scroll', this.throttle(this.loadMore));
+        // window.addEventListener('scroll', this.throttle(this.loadMore));
     },
   methods: {
       toggleSiderbar () {
@@ -120,20 +120,27 @@ export default {
           this.searchname = '搜索';
           this.$store.commit('getsearchkey', '');
           this.$router.go(-1);
+          this.searchkey = '';
           this.$store.state.reslist = '';
+          this.$store.state.showres = false;
           this.$store.state.hotsearch = true;
+        //   window.removeEventListener('scroll', this.handleScroll());
+          window.removeEventListener('scroll', this.loadMore(), false);
       },
       search () {
             var key = this.searchitem || '';
+            var page = this.page = 1;
             if (key) {
-                this.Axios.get('http://localhost:3001/api/search/song/qq?key='+key)
+                this.Axios.get('http://localhost:3001/api/search/song/qq?key='+key+'&page='+page+'&limit=20')
                 .then(res => {
                     this.$store.state.hotsearch = false;
                     // this.searchkey = item;
                     // this.hotsearch = false;
                     // this.$store.commit('getsearchkey', item)
                     if (res.status == 200) {
+                        window.addEventListener('scroll', this.throttle(this.loadMore, 300), false);
                         //搜索
+                        this.$store.state.showres = true;
                         var reslist = res.data.data.songList.map((item, index) => ({
                             songname: item.name,
                             songid: item.id,
@@ -147,6 +154,8 @@ export default {
                         // this.specialname = res.data.data.data.special_key;
                         // this.specialurl = res.data.data.data.special_url;
                         // console.log(res.data.data.songList);
+                        this.page = this.page + 1;
+                        this.total = res.data.data.total;
                         this.$store.state.reslist = reslist;
                     }
                 })
@@ -158,20 +167,28 @@ export default {
       },
       loadMore () {
         this.scroll = document.body.scrollTop;
-        this.clientHeight = this.$store.state.clientHeight;
+        this.clientHeight = parseInt(1100*(this.page-1));
         this.scrollheight = document.body.scrollHeight;
+        // console.log(this.scroll)
+        // console.log(parseInt(this.total/20));
+        // console.log(this.page);
+        // return;
     
-        if (this.searchitem) {
-        var scroll = this.page == 2 && parseInt(this.scroll + this.clientHeight + 90) || parseInt(this.scroll - 550*(this.page-2) + this.clientHeight + 90);
-        if (parseInt(this.total/10) == this.page) {
-            this.loadmore = false;
+        if (this.searchitem && this.$store.state.reslist) {
+        var scroll = this.page == 2 && parseInt(this.scroll + this.clientHeight - 460) || parseInt(this.scroll - 1100*(this.page-2) + this.clientHeight - 460);
+        if (parseInt(this.total/20) <= this.page) {
+            // window.removeEventListener('scroll', this.loadMore());
+            this.$store.state.loadmore = false;
+            this.$store.state.allload = true;
             return;
         } else if (scroll >= parseInt(this.scrollheight)) {
             var page = this.page;
             var item = this.$store.state.searchkey || '';
-            this.loadmore = true;
-            setTimeout(() => {
-                this.Axios.get('http://localhost:3001/api/search/song/qq?key='+this.searchitem+'&page='+page)
+            this.$store.state.loadmore = true;
+            if (!time) {
+            clearTimeout(time);
+            var time = setTimeout(() => {
+                this.Axios.get('http://localhost:3001/api/search/song/qq?key='+this.searchitem+'&page='+page+'&limit=20')
                 .then(res => {
                     // this.searchkey = item;
                     this.$store.commit('getsearchkey', item)
@@ -187,9 +204,12 @@ export default {
                                 singerid: item.id || ''
                             }))
                         }));
-                        this.loadmore = false;
-                        var resmore = this.$store.state.reslist.concat(reslistmore);
-                        this.$store.state.reslist = resmore;
+                        this.$store.state.loadmore = false;
+                        // var resmore = this.$store.state.reslist.concat(reslistmore);
+                        for (var i = 0; i < 20; i++) {
+                            this.$store.state.reslist.push(reslistmore[i]);
+                        }
+                        // this.$store.state.reslist.push(resmore.slice(20));
                         this.page = this.page + 1;
                         // this.specialname = res.data.data.data.special_key;
                         // this.specialurl = res.data.data.data.special_url;
@@ -199,7 +219,8 @@ export default {
                 .catch(function(err){
                     console.log(err);
             })
-            }, 1500)
+            }, 100)
+            }
         }
         }
       }

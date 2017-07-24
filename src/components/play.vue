@@ -27,8 +27,8 @@
 				<div class="progress__box">
 					<div class="progress__bg"></div>
 					<div class="progress__load" style="-webkit-transform:translateX(100%);"></div>
-					<div class="progress__play" id="js-progress" style="transform: translateX(0.352682%); transition-duration: 1s;"></div>
-					<div class="progress__play" id="play_on"><span class="progress__dot" style="display:none;" id="btn_pro"></span></div>
+					<div class="progress__play" id="js-progress" :style="{animation: playProgress}" :class="{pause_progress: !pause}"></div>
+					<div class="progress__play" id="play_on" :style="{animation: playProgress}" :class="{pause_progress: !pause}"><span class="progress__dot" id="btn_pro"></span></div>
 				</div>
 			</div>
 			<span class="progress__start js-time-start">00:00</span>
@@ -40,11 +40,11 @@
       <div class="operate operate--right">
 
 			<a class="operate__item js-like" href="javascript:;">
-				<i class="icon_like">喜欢</i>
+				<i class="icon_like"></i>
 			</a>
 		</div>
     <div class="btns">
-        <a class="btn_download js-download" href="javascript:;">下载这首歌</a>
+        <a class="btn_download js-download" href="javascript:;"></a>
       </div>
     </div>
 
@@ -61,6 +61,7 @@ export default {
     return {
       coverimg: '',
       rotImgShow: true,
+      playProgress: 'play_progress' + ' ' + this.$store.state.interval +'s linear infinite'
     }
   },
   computed: {
@@ -86,7 +87,19 @@ export default {
     interval () {
       var songtime = this.formatVideoDuration(this.$store.state.interval);
       return songtime;
-    }
+    },
+    // playProgress () {
+    //   if (this.$store.state.isPlay){
+    //     return {
+    //       'animation-play-state': 'paused'
+    //     }
+    //   } else {
+    //     return {
+    //       'animation-play-state': 'running',
+    //       // animation: 'play_progress' + ' ' + this.$store.state.interval +'s linear infinite'
+    //     }
+    //   }
+    // }
     // showplay () {
     //   return this.$store.state.showplay;
     // }
@@ -258,6 +271,20 @@ a, a:hover {
     background-repeat: no-repeat;
     background-size: 70px;
 }
+.icon_like {
+  display: block;
+  width: 1.5rem;
+  height: 1.5rem;
+  background-size: 4rem;
+}
+.btn_download {
+    display: block;
+    opacity: .5;
+    width: 1.5rem;
+    height: 1.5rem;
+    background-image: url('../assets/icons/player.png');
+    background-position: 0 -120px;
+}
 .progress__dot::before {
     content: "";
     display: block;
@@ -309,7 +336,17 @@ a, a:hover {
 .btns {
     position: absolute;
     bottom: 2rem;
-    left: 5rem;
+    left: 8rem;
+}
+
+@keyframes play_progress
+{
+0%   {transform:translateX(0);}
+100% {transform:translateX(98%);}
+}
+.pause_progress {
+  animation-play-state:paused !important;
+  -webkit-animation-play-state:paused !important; 
 }
 @keyframes rotatecover
 {

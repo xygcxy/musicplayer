@@ -7,7 +7,7 @@
         <a :href="specialurl" class="special-k">{{specialname}}</a>
         <a @click="search(item.name)" v-for="item in searchlist" :key="item.id" class="normal-k" >{{item.name}}</a></div>
     </div>
-    <div id="search_result" class="mod_search_content" ref="viewBox">
+    <div id="search_result" class="mod_search_content" ref="viewBox" v-show="showres">
         <ul class="search_content">
         <li data-limit="" :data-songmid="item.songid" v-for="item in reslist" :key="item.id" @click="playing(item.songid, item.songname, item.singerlist[0].singer, item.interval, item.album)">
         <i class="icon "></i>
@@ -20,6 +20,7 @@
             <i class="loading__icon"></i>
             <span class="loading__text">正在载入更多...</span>
     </div>
+    <div id="load_complete" class="load_complete" style="display: none;" v-show="allload">已加载全部</div>
   </div>
   </div>
 </template>
@@ -37,7 +38,6 @@ export default {
           singerlist: '',
           scroll: '',
           page: 1,
-          loadmore: false
         //   searchkey: ''
       }
   },
@@ -55,12 +55,20 @@ export default {
         hotsearch () {
             return this.$store.state.hotsearch
         },
+        showres () {
+            return this.$store.state.showres
+        },
+        loadmore () {
+            return this.$store.state.loadmore
+        },
+        allload () {
+            return this.$store.state.allload
+        }
     },
     mounted () {
-        window.addEventListener('scroll', this.throttle(this.handleScroll));
+        // window.addEventListener('scroll', this.throttle(this.handleScroll));
     },
     watch: {
-        
     },
   methods: {
       searchrequest (){
@@ -68,6 +76,7 @@ export default {
             .then(res => {
                 if (res.status == 200) {
                     //热门搜索
+                    this.$store.state.showres = true;
                     this.searchlist = res.data.data.data.hotkey.slice(0, 10).map((item, index) => ({
                         name: item.k,
                         num: item.n,
@@ -82,13 +91,15 @@ export default {
       },
       search(item) {
           var page = this.page = 1;
-          this.Axios.get('http://localhost:3001/api/search/song/qq?key='+item+'&page='+page)
+          this.Axios.get('http://localhost:3001/api/search/song/qq?key='+item+'&page='+page+'&limit=20')
             .then(res => {
                 // this.searchkey = item;
                 this.$store.state.hotsearch = false;
                 this.$store.commit('getsearchkey', item)
                 if (res.status == 200) {
+                    window.addEventListener('scroll', this.throttle(this.handleScroll, 300), false);
                     //搜索
+                    this.$store.state.showres = true;
                     var reslist = res.data.data.songList.map((item, index) => ({
                         songname: item.name,
                         songid: item.id,
@@ -146,19 +157,27 @@ export default {
       },
       handleScroll () {
         this.scroll = document.body.scrollTop;
-        this.clientHeight = this.$store.state.clientHeight = this.$refs.viewBox.clientHeight;
+        this.clientHeight = parseInt(1100*(this.page-1));
         this.scrollheight = document.body.scrollHeight;
-        if (this.$store.state.searchkey) {
-        var scroll = this.page == 2 && parseInt(this.scroll + this.clientHeight + 90) || parseInt(this.scroll - 550*(this.page-2) + this.clientHeight + 90);
-        if (parseInt(this.total/10) == this.page) {
-            this.loadmore = false;
+        // console.log(this.scroll)
+        // console.log(this.clientHeight);
+        // console.log(this.scrollheight);
+        // return;
+        if (this.$store.state.searchkey && this.$store.state.reslist) {
+        var scroll = this.page == 2 && parseInt(this.scroll + this.clientHeight - 460) || parseInt(this.scroll - 1100*(this.page-2) + this.clientHeight - 460);
+        if (parseInt(this.total/20) <= this.page) {
+            // window.removeEventListener('scroll', this.handleScroll());
+            this.$store.state.loadmore = false;
+            this.$store.state.allload = true;
             return;
         } else if (scroll >= parseInt(this.scrollheight)) {
             var page = this.page;
             var item = this.$store.state.searchkey;
-            this.loadmore = true;
-            setTimeout(() => {
-                this.Axios.get('http://localhost:3001/api/search/song/qq?key='+item+'&page='+page)
+            this.$store.state.loadmore = true;
+            if (!time) {
+            clearTimeout(time);
+            var time = setTimeout(() => {
+                this.Axios.get('http://localhost:3001/api/search/song/qq?key='+item+'&page='+page+'&limit=20')
                 .then(res => {
                     // this.searchkey = item;
                     this.$store.commit('getsearchkey', item)
@@ -174,9 +193,12 @@ export default {
                                 singerid: item.id || ''
                             }))
                         }));
-                        this.loadmore = false;
-                        var resmore = this.$store.state.reslist.concat(reslistmore);
-                        this.$store.state.reslist = resmore;
+                        this.$store.state.loadmore = false;
+                        // var resmore = this.$store.state.reslist.concat(reslistmore);
+                        // this.$store.state.reslist.push(resmore.slice(20));
+                        for (var i = 0; i < 20; i++) {
+                            this.$store.state.reslist.push(reslistmore[i]);
+                        }
                         this.page = this.page + 1;
                         // this.specialname = res.data.data.data.special_key;
                         // this.specialurl = res.data.data.data.special_url;
@@ -187,6 +209,7 @@ export default {
                     console.log(err);
             })
             }, 1500)
+            }
         }
         }  
       }       
@@ -235,7 +258,7 @@ h3{
     // position: absolute;
     position: relative;
     height: 100%;
-    margin-bottom: 4rem;
+    // margin-bottom: 4rem;
     overflow: scroll;
     ul {
         margin: 0;
@@ -292,7 +315,40 @@ h3{
     background: #e5e5e5;
 }
 .mod_loading {
-    position: fixed;
-    bottom: 4rem;
+    position: relative;
+    height: 55px;
+    line-height: 55px;
+    padding-bottom: 4rem;
+    text-align: center;
+}
+@keyframes ani_loading{
+    from{
+        -webkit-transform:rotate(0deg);
+    }
+    to {
+        -webkit-transform:rotate(360deg);
+    }
+}
+.loading__icon {
+    vertical-align: middle;
+    position: relative;
+    top: -2px;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: url(../assets/icons/icon_loading.png) no-repeat;
+    background-size: 20px 20px;
+    -webkit-animation: ani_loading 1s infinite;
+}
+.loading__text {
+    margin-left: 5px;
+    font-size: 12px;
+    color: #808080;
+}
+.load_complete {
+    line-height: 40px;
+    text-align: center;
+    padding-bottom: 4rem;
+    color: #808080;
 }
 </style>
