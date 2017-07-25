@@ -27,16 +27,17 @@
 				<div class="progress__box">
 					<div class="progress__bg"></div>
 					<div class="progress__load" style="-webkit-transform:translateX(100%);"></div>
-					<div class="progress__play" id="js-progress" :style="{animation: playProgress}" :class="{pause_progress: !pause}"></div>
-					<div class="progress__play" id="play_on" :style="{animation: playProgress}" :class="{pause_progress: !pause}"><span class="progress__dot" id="btn_pro"></span></div>
+					<div class="progress__play" id="js-progress" :style="playProgress" :class="{pause_progress: !pause}"></div>
+					<div class="progress__play" id="play_on" :style="playProgress" :class="{pause_progress: !pause}" @touchend.stop="touchEnd($event)" @touchmove.stop="touchMove($event)"><span class="progress__dot" id="btn_pro"></span></div>
 				</div>
 			</div>
-			<span class="progress__start js-time-start">00:00</span>
+			<span class="progress__start js-time-start">{{currttime}}</span>
 			<span class="progress__end js-time-total">{{interval}}</span>
 		</div>
 
-      
+      <a class="icon_prev" href="javascript:;" @click="preplay" ></a>
       <a class="icon_play js-play" href="javascript:;" @click="play" :class="{'btn-pause': !pause}"></a>
+      <a class="icon_next" href="javascript:;" @click="nextplay"></a>
       <div class="operate operate--right">
 
 			<a class="operate__item js-like" href="javascript:;">
@@ -61,7 +62,8 @@ export default {
     return {
       coverimg: '',
       rotImgShow: true,
-      playProgress: 'play_progress' + ' ' + this.$store.state.interval +'s linear infinite'
+      startPos: '',
+      // playProgress: 'play_progress' + ' ' + this.$store.state.interval +'s linear infinite'
     }
   },
   computed: {
@@ -88,18 +90,17 @@ export default {
       var songtime = this.formatVideoDuration(this.$store.state.interval);
       return songtime;
     },
-    // playProgress () {
-    //   if (this.$store.state.isPlay){
-    //     return {
-    //       'animation-play-state': 'paused'
-    //     }
-    //   } else {
-    //     return {
-    //       'animation-play-state': 'running',
-    //       // animation: 'play_progress' + ' ' + this.$store.state.interval +'s linear infinite'
-    //     }
-    //   }
-    // }
+    playProgress () {
+      var e = this.$store.state.progress/this.$store.state.interval*100;
+      if (e == 99) {
+        return { transform: 'translateX(0%)', transitionDuration: 0+'s'};
+      } else {
+        return { transform: 'translateX('+ e +'%)', transitionDuration: 1+'s'};
+      }
+    },
+    currttime () {
+      return this.formatVideoDuration(this.$store.state.progress);
+    }
     // showplay () {
     //   return this.$store.state.showplay;
     // }
@@ -129,6 +130,99 @@ export default {
       this.$router.go(-1);
       this.$store.state.showFooter = true;
       // this.$store.state.showplay = false;
+    },
+    // touchStart(e){
+		// 		this.startPos = e.touches[0].pageX;
+        // this.startPos.y = e.pageY;
+        // console.log(this.startPos);
+    // },
+    touchMove(e){
+      var x = parseInt(e.touches[0].pageX - 48);
+      var prolength = e.target.parentNode.clientWidth;
+      var currenttime = (x / prolength) * this.$store.state.interval.toFixed(0);
+      if (currenttime > 0 && currenttime <= this.$store.state.interval){
+        this.$store.state.progress = currenttime;
+      }
+    //   console.log(x);
+      // var distance =  this.sliderConf.distance * 75;
+      //temp 将滑动速度变慢
+      // var temp = (x-this.startPos)*18/90;
+      // //查询当前位置值
+      // if(temp < 0 && this.currentX > -distance){
+      //   this.currentX = this.currentX + temp;
+      // }
+    },
+    touchEnd(e){
+      // var distance =  this.sliderConf.distance * 75;
+      var endPos = parseInt(e.changedTouches[0].pageX - 48);
+      var prolength = e.target.parentNode.clientWidth;
+      var currenttime = (endPos / prolength) * this.$store.state.interval.toFixed(0);
+      if (currenttime > 0 && currenttime <= this.$store.state.interval){
+        this.$store.state.progress = currenttime;
+        document.querySelector('.audio').currentTime = currenttime;
+      }
+      // this.endPos.y = e.pageY;
+      // if(this.endPos.x - this.startPos.x < 0){
+      //   this.currentX = -distance;
+      // }else if(this.endPos.x - this.startPos.x > 0){
+      //   this.currentX = 0;
+      // }
+      // //最后判断，如果超出最阀值，就还原
+      // if(this.currentX < -distance || this.currentX > 0){
+      //   this.currentX = 0;
+      // }
+    },
+    preplay () {
+      if (this.$store.state.indexid){
+      this.Axios.get('http://localhost:3001/api/get/song/qq?id='+this.$store.state.previd['songid'])
+            .then(res => {
+                // this.searchkey = item;
+                // this.$store.commit('getsearchkey', item)
+                if (res.status == 200) {
+                    this.$store.state.src = res.data.data.url;
+                    this.$store.state.songname = this.$store.state.previd['songname'];
+                    this.$store.state.singer = this.$store.state.previd.singerlist[0].singer;
+                    this.$store.state.coversmall = this.$store.state.previd['album']['coverSmall'];
+                    this.$store.state.cover = this.$store.state.previd['album']['cover'];
+                    this.$store.state.showplay = true;
+                    this.$store.state.isPlay = true;
+                    this.$store.state.showfootplay = true;
+                    var index = this.$store.state.indexid = this.$store.state.indexid - 1;
+                    this.$store.state.interval = this.$store.state.previd['interval'];
+                    this.$store.state.previd = this.$store.state.reslist[index-1];
+                    this.$store.state.nextvid = this.$store.state.reslist[index+1];
+                }
+            })
+            .catch(function(err){
+                console.log(err);
+        });
+      }
+    },
+    nextplay () {
+      if (this.$store.state.indexid < this.$store.state.reslist.length){
+        this.Axios.get('http://localhost:3001/api/get/song/qq?id='+this.$store.state.nextvid['songid'])
+            .then(res => {
+                // this.searchkey = item;
+                // this.$store.commit('getsearchkey', item)
+                if (res.status == 200) {
+                    this.$store.state.src = res.data.data.url;
+                    this.$store.state.songname = this.$store.state.nextvid['songname'];
+                    this.$store.state.singer = this.$store.state.nextvid.singerlist[0].singer;
+                    this.$store.state.coversmall = this.$store.state.nextvid['album']['coverSmall'];
+                    this.$store.state.cover = this.$store.state.nextvid['album']['cover'];
+                    this.$store.state.showplay = true;
+                    this.$store.state.isPlay = true;
+                    this.$store.state.showfootplay = true;
+                    var index = this.$store.state.indexid = this.$store.state.indexid + 1;
+                    this.$store.state.interval = this.$store.state.nextvid['interval'];
+                    this.$store.state.previd = this.$store.state.reslist[index-1];
+                    this.$store.state.nextvid = this.$store.state.reslist[index+1];
+                }
+            })
+            .catch(function(err){
+                console.log(err);
+        });
+      }
     }
   }
 }
@@ -214,9 +308,9 @@ export default {
 .progress__bar {
     position: absolute;
     top: 0;
-    left: 55px;
-    right: 47px;
-    height: 40px;
+    left: 48px;
+    right: 50px;
+    height: 50px;
     overflow: hidden;
 }
 .progress__bg {
@@ -250,6 +344,41 @@ a, a:hover {
     border-radius: 999px;
     background: rgba(0,0,0,.1);
     opacity: .6;
+}
+
+.icon_prev, .icon_next {
+    position: absolute;
+    width: 1.8rem;
+    height: 1.8rem;
+    bottom: 4.5rem;
+    border: solid 1px #fff;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.1);
+    opacity: .6;
+}
+.icon_prev {
+  left: 25%;
+}
+.icon_prev::after {
+    content: "";
+    background-image: url('../assets/icons/player.png');
+    display: block;
+    width: 1rem;
+    height: 1rem;
+    margin: 7px auto;
+    background-position: -2px -32px;
+}
+.icon_next::after {
+    content: "";
+    background-image: url('../assets/icons/player.png');
+    display: block;
+    width: 1rem;
+    height: 1rem;
+    margin: 7px auto;
+    background-position: -1px -54px;
+}
+.icon_next {
+  right: 25%;
 }
 .icon_play::after, .btn_download::before, .tips.success p::before {
     background-image: url('../assets/icons/sprite_play.png');
@@ -317,13 +446,29 @@ a, a:hover {
 .progress__dot {
     position: absolute;
     top: -19px;
-    right: -28px;
-    width: 40px;
-    height: 40px;
+    right: -13px;
+    // width: 40px;
+    // height: 40px;
 }
 .btn-pause::after {
     background-position: 0 -150px;
     margin: 15px 0 0 18px;
+}
+.progress__start, .progress__end {
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    width: 55px;
+    line-height: 40px;
+    text-align: center;
+    color: #808080;
+    font-size: 0.8rem;
+}
+.progress__start {
+    left: 0;
+}
+.progress__end {
+    right: 0;
 }
 .operate--right {
     left: 2rem;
@@ -342,7 +487,7 @@ a, a:hover {
 @keyframes play_progress
 {
 0%   {transform:translateX(0);}
-100% {transform:translateX(98%);}
+100% {transform:translateX(90%);}
 }
 .pause_progress {
   animation-play-state:paused !important;

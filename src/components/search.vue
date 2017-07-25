@@ -9,7 +9,7 @@
     </div>
     <div id="search_result" class="mod_search_content" ref="viewBox" v-show="showres">
         <ul class="search_content">
-        <li data-limit="" :data-songmid="item.songid" v-for="item in reslist" :key="item.id" @click="playing(item.songid, item.songname, item.singerlist[0].singer, item.interval, item.album)">
+        <li data-limit="" :data-songmid="item.songid" v-for="(item,index) in reslist" :key="item.id" @click="playing(item.songid, item.songname, item.singerlist[0].singer, item.interval, item.album, index)">
         <i class="icon "></i>
         <h6 class="main_tit">{{item.songname}}</h6>
         <span class="sub_tit" v-for="list in item.singerlist" :key="list.id">{{list.singer}}</span>
@@ -122,7 +122,7 @@ export default {
                 console.log(err);
         });
       },
-      playing(id, songname, singer, interval, album) {
+      playing(id, songname, singer, interval, album, index) {
           this.Axios.get('http://localhost:3001/api/get/song/qq?id='+id)
             .then(res => {
                 // this.searchkey = item;
@@ -137,18 +137,9 @@ export default {
                     this.$store.state.isPlay = true;
                     this.$store.state.showfootplay = true;
                     this.$store.state.interval = interval;
-                    //搜索
-                    // this.reslist = res.data.data.songList.map((item, index) => ({
-                    //     songname: item.name,
-                    //     songid: item.id,
-                    //     singerlist: item.artists.map((item, index) => ({
-                    //         singer: item.name || '',
-                    //         singerid: item.id || ''
-                    //     }))
-                    // }));
-                    // this.specialname = res.data.data.data.special_key;
-                    // this.specialurl = res.data.data.data.special_url;
-                    // console.log(res.data.data.songList);
+                    this.$store.state.indexid = index;
+                    this.$store.state.previd = this.$store.state.reslist[index-1];
+                    this.$store.state.nextvid = this.$store.state.reslist[index+1];
                 }
             })
             .catch(function(err){

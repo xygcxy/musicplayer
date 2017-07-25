@@ -32,6 +32,10 @@ export default {
         avatar1Show: false
     }
   },
+  mounted() {
+    var audio = document.querySelector('.audio');
+    audio.addEventListener('timeupdate', this.throttle(this.Progress));
+  },
   computed: {
     src () {
       return this.$store.state.src
@@ -90,6 +94,10 @@ export default {
         this.$store.state.showfootplay = true;
         // this.$refs.showheaderef.show('false');
       }
+    },
+    Progress () {
+      var currenttime = document.querySelector('.audio').currentTime;
+      this.$store.state.progress = currenttime;
     }
   },
 }
