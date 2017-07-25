@@ -9,7 +9,7 @@ Vue技术栈: Vue2, Vuex, Vux
 
 第一次使用vue写项目，有些vue特性还没用到，正在学习中，努力优化代码中
 
-# 查看
+# 查看Demo
     git clone git@github.com:xygcxy/musicplayer.git
     cd musicplayer
 
