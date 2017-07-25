@@ -9,7 +9,7 @@ Vue技术栈: Vue2, Vuex, Vux
 
 作为音乐发烧友，虽然经常用网易云音乐来听歌，不过QQ音乐的界面我挺喜欢的，最近想学学Vue，所以就拿这个练手。</br>
 之前只看过文档，这次使用vue来构建页面，接口使用了music-api模块，部分接口通过对QQ音乐PC网页及M端网页进行分析得来自己添加到music-api模块中，使用Koa来封装接口提供给vue使用。</br>
-第一次使用vue写项目，有些vue特性还没用到，正在学习中，努力优化代码中
+第一次使用vue写项目，有些vue特性还没用到，正在学习中，努力优化代码中。<br/>
 
 # 查看Demo
     git clone git@github.com:xygcxy/musicplayer.git
