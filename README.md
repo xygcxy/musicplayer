@@ -12,7 +12,7 @@ Vue技术栈: Vue2, Vuex, Vux
 目前只实现了播放页、音乐馆、搜索、首页部分功能，音乐馆二级页面、排行榜、发现尚未实现。<br/>
 第一次使用vue写项目，有些vue特性还没用到，正在学习中，努力优化代码中。<br/>
 
-# 查看Demo
+## 查看Demo
     git clone git@github.com:xygcxy/musicplayer.git
     cd musicplayer
 
@@ -27,6 +27,9 @@ Vue技术栈: Vue2, Vuex, Vux
 
     # serve with hot reload at localhost:8080
     npm run dev
+
+浏览器打开 localhost:8080
+
 # 效果图
 ![alt text](./src/assets/demo.gif "Demo")
 

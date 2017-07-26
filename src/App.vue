@@ -4,7 +4,7 @@
     <!--<img src="./assets/logo.png">-->
     <keep-alive><router-view></router-view></keep-alive>
     <div class="footer" v-show="showFooter">
-      <router-link to="/play" v-on:click.native="showhf" v-show="showfootplay">
+      <router-link to="/play" v-on:click.native="showhf" v-show="showfootplay" ref="play">
         <img :src="cover" alt="" class="avatar" v-show="avatarShow" >
         <img :src="cover" alt="" class="avatar1" v-show="avatar1Show" >
         <div class="Name">
@@ -13,7 +13,7 @@
         </div>
         </router-link>
         <p v-show="!showfootplay" class="nosong">QQ音乐 听我想听的歌</p>
-        <audio :src="src" class="audio" v-bind:autoplay="isPlay" loop></audio>
+        <audio :src="src" class="audio" v-bind:autoplay="isPlay"></audio>
         <img class="img" src="./assets/icons/pause.png" alt="" @click="play" v-show="!isPlay">
         <img class="img1" src="./assets/icons/play.png" alt="" @click="play" v-show="isPlay" >
     </div>
@@ -22,6 +22,7 @@
 
 <script>
 import index from '@/components/index'
+import play from './components/play'
 export default {
   name: 'app',
   data () {

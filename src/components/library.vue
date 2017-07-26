@@ -52,10 +52,11 @@
         <i class="icon-rec"></i>
         <div class="album-content">
             <div class="detail" v-for="item in hotlist" :key="item.id">
-                <a :href="item.url">
+                <router-link to="/detail/">
                 <img :src="item.imgurl" alt=""><span>{{item.num}}</span>
                  <p>{{item.title}}</p>
                 </a>
+                </router-link>
             </div>
         </div>
       </div>

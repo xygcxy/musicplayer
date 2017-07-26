@@ -92,11 +92,10 @@ export default {
     },
     playProgress () {
       var e = this.$store.state.progress/this.$store.state.interval*100;
-      if (e == 99) {
-        return { transform: 'translateX(0%)', transitionDuration: 0+'s'};
-      } else {
-        return { transform: 'translateX('+ e +'%)', transitionDuration: 1+'s'};
+      if (document.querySelector('.audio').ended) {
+        this.nextplay();
       }
+      return { transform: 'translateX('+ e +'%)', transitionDuration: 0+'s'};
     },
     currttime () {
       return this.formatVideoDuration(this.$store.state.progress);
@@ -114,16 +113,8 @@ export default {
       var p = document.querySelector('.avatar')
       if(!this.$store.state.isPlay) {
         play.pause()
-        // this.$store.state.avatar1Show = false
-        // this.$store.state.avatarShow = true
-        // this.$store.state.rotImg1Show = false
-        // this.$store.state.rotImgShow = true
       }else {
         play.play()
-        // this.$store.state.avatarShow = false
-        // this.$store.state.avatar1Show = true
-        // this.$store.state.rotImg1Show = true
-        // this.$store.state.rotImgShow = false
       }
     },
     mini () {
@@ -140,37 +131,34 @@ export default {
       var x = parseInt(e.touches[0].pageX - 48);
       var prolength = e.target.parentNode.clientWidth;
       var currenttime = (x / prolength) * this.$store.state.interval.toFixed(0);
-      if (currenttime > 0 && currenttime <= this.$store.state.interval){
+      if (x <= 0) {
+        this.$store.state.progress = 0;
+      } 
+      if (x >= prolength) {
+        this.$store.state.progress = this.$store.state.interval;
+      }
+      if (x > 0 && x < prolength){
         this.$store.state.progress = currenttime;
       }
-    //   console.log(x);
-      // var distance =  this.sliderConf.distance * 75;
-      //temp 将滑动速度变慢
-      // var temp = (x-this.startPos)*18/90;
-      // //查询当前位置值
-      // if(temp < 0 && this.currentX > -distance){
-      //   this.currentX = this.currentX + temp;
-      // }
     },
     touchEnd(e){
       // var distance =  this.sliderConf.distance * 75;
       var endPos = parseInt(e.changedTouches[0].pageX - 48);
       var prolength = e.target.parentNode.clientWidth;
       var currenttime = (endPos / prolength) * this.$store.state.interval.toFixed(0);
-      if (currenttime > 0 && currenttime <= this.$store.state.interval){
+      if (endPos <= 0) {
+        this.$store.state.progress = 0;
+        document.querySelector('.audio').currentTime = 0;
+      } 
+      if (endPos >= prolength) {
+        this.$store.state.progress = this.$store.state.interval;
+        document.querySelector('.audio').currentTime = this.$store.state.interval-1;
+      }
+      if (endPos > 0 && endPos < prolength){
         this.$store.state.progress = currenttime;
         document.querySelector('.audio').currentTime = currenttime;
       }
-      // this.endPos.y = e.pageY;
-      // if(this.endPos.x - this.startPos.x < 0){
-      //   this.currentX = -distance;
-      // }else if(this.endPos.x - this.startPos.x > 0){
-      //   this.currentX = 0;
-      // }
-      // //最后判断，如果超出最阀值，就还原
-      // if(this.currentX < -distance || this.currentX > 0){
-      //   this.currentX = 0;
-      // }
+      
     },
     preplay () {
       if (this.$store.state.indexid){
@@ -267,11 +255,13 @@ export default {
     bottom: 0;
     left: 0;
     z-index: 1;
-    width: 100%;
+    width: 93%;
+    height: 93%;
     background-size: cover;
     background-position: bottom center;
+    transform: scale(1.15);
     -webkit-filter: blur(15px);
-    // -webkit-transform: scale(1.15);
+    -webkit-transform: scale(1.15);
 }
 .bgmask{
     position: absolute;

@@ -55,15 +55,13 @@ router.get('/api/get/song/:vendor', function*() {
 });
 
 router.get('/api/get/album/:vendor', function*() {
-  let vendor = this.params.vendor;
-  
+    let vendor = this.params.vendor;
     var data = yield MusicApi.getAlbum(vendor, this.query || {});
     this.body = data && {data: data};
 });
 
 router.get('/api/get/playlist/:vendor', function*() {
-  let vendor = this.params.vendor;
-  
+    let vendor = this.params.vendor;
     var data = yield MusicApi.getPlaylist(vendor, this.query || {});
     this.body = data && {data: data};
 });

@@ -21,6 +21,7 @@
 //https://mi.gdt.qq.com/gdt_mview.fcg?posw=750&posid=8719245994997175503&ext=%7B%22req%22%3A%7B%22jsver%22%3A%220%22%2C%22sdk_src%22%3A%22LiteSDK%22%2C%22muidtype%22%3A2%2C%22m5%22%3A%22D7CF109B-F500-4569-B2EB-AA4B4C9630CA%22%2C%22c_device%22%3A%22UnknownDevice_iPhone9%2C1%22%2C%22c_h%22%3A1334%2C%22hostver%22%3A%2244021%22%2C%22muid%22%3A%225def849504ecd30db6a929eb5df8999f%22%2C%22c_pkgname%22%3A%22com.tencent.QQMusic%22%2C%22hosttype%22%3A%22com.tencent.QQMusic%22%2C%22c_os%22%3A%22ios%22%2C%22taglist%22%3A%22%22%2C%22conn%22%3A1%2C%22c_devicetype%22%3A1%2C%22c_w%22%3A750%2C%22carrier%22%3A2%2C%22c_ori%22%3A0%2C%22c_dpi%22%3A320%2C%22sdkver%22%3A%225.7%22%2C%22postype%22%3A4%2C%22uin%22%3A%22729815936%22%2C%22tmpallpt%22%3A%22true%22%2C%22c_osver%22%3A%2210.3%22%7D%7D&count=1&posh=1334&datatype=2&r=3242686558&adposcount=1&supportHttps=1
 //客户端配置：https://y.qq.com/m/client/config/url.json?r=16842
 //搜索全部：https://c.y.qq.com/soso/fcgi-bin/client_search_cp?ct=24&qqmusic_ver=1298&new_json=1&remoteplace=txt.yqq.song&searchid=63597599438890766&t=0&aggr=1&cr=1&catZhida=1&lossless=0&flag_qc=0&p=1&n=20&w=%E7%8E%8B%E5%8A%9B%E5%AE%8F&g_tk=371009976&jsonpCallback=searchCallbacksong3246&loginUin=729815936&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0
+//歌单列表api：https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg?type=1&json=1&utf8=1&onlysong=0&disstid=3271199057&format=jsonp&g_tk=412345810&jsonpCallback=playlistinfoCallback&loginUin=729815936&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0
 import Vue from 'vue'
 import App from './App'
 import router from './router'
@@ -63,6 +64,23 @@ Vue.prototype.throttle = function (handle, delay, time) {
       clearTimeout(timer);
       timer = setTimeout(handle, delay || 100);
     }
+  }
+}
+Vue.prototype.debounce = function (handle, delay, mustdo) {
+  var timeout, result;
+
+  return function () {
+    var context = this;
+    var args = arguments;
+    if (timeout) clearTimeout(timeout);
+    if (mustdo) {
+      var callnow = !timeout;
+      timeout = setTimeout(() => timeout = null, delay);
+      if (callnow) result = handle.apply(context, args);
+    } else {
+      timeout = setTimeout(() => handle.apply(context, args), delay)
+    }
+    return result;
   }
 }
 Vue.config.productionTip = false
