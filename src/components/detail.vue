@@ -12,7 +12,7 @@
                         <span class="author">{{author}}</span>
                     </p>
                 </div>
-                <a class="focus_play"></a>
+                <a class="focus_play" @click="play()"></a>
             </div>
         </div>
         <div class="focus_gradient"></div>
@@ -25,7 +25,7 @@
     <div class="song_list_all">
         <ul class="song_list">
         <li v-for="(item, index) in songlist" :key="item.id">
-            <a class="song_content">
+            <a class="song_content" @click="play(item.id, index)">
                 <div class="songlist">
                     <h3>{{item.name}}</h3>
                     <p>{{item.album.name}}</p>
@@ -84,6 +84,33 @@ export default {
     backlib () {
         this.$store.state.showheader = true;
         this.$router.go(-1);
+    },
+    play (id, index) {
+        id = id || this.songlist[0]['id'];
+        index = index || 0;
+        this.Axios.get('http://localhost:3001/api/get/song/qq?id='+id)
+            .then(res => {
+                // this.searchkey = item;
+                // this.$store.commit('getsearchkey', item)
+                if (res.status == 200) {
+                    this.$store.state.src = res.data.data.url;
+                    this.$store.state.reslist = this.songlist;
+                    this.$store.state.songname = this.songlist[index]['name'];
+                    this.$store.state.singer = this.songlist[index]['artists'][0]['name'];
+                    this.$store.state.coversmall = this.songlist[index]['album']['coverSmall'];
+                    this.$store.state.cover = this.songlist[index]['album']['cover'];
+                    this.$store.state.showplay = true;
+                    this.$store.state.isPlay = true;
+                    this.$store.state.showfootplay = true;
+                    this.$store.state.indexid = index;
+                    this.$store.state.interval = this.songlist[index]['interval'];
+                    this.$store.state.previd = index > 0 && this.songlist[index-1];
+                    this.$store.state.nextvid = index < this.songlist.length && this.songlist[index+1];
+                }
+            })
+            .catch(function(err){
+                console.log(err);
+        });
     }
   },
   computed: {

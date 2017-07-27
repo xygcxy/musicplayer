@@ -161,9 +161,19 @@ body {
 .slide-left-enter-active {
   transition: all 0.5s ease;
 }
-.slide-left-enter {
+// .slide-left-leave-active {
+//   transition: all 10s ease;
+// }
+// .slide-left-leave {
+//   transition: all 10s ease;
+// }
+.slide-left-enter, .slide-left-leave-active {
   // -webkit-transform: translateX(100%);
   transform: translateX(100%);
+}
+.slide-left-leave {
+  // -webkit-transform: translateX(100%);
+  transform: translateX(-100%);
 }
 // .slide-left-leave {
 //   transform: translateX(-100%);

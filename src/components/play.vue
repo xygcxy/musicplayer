@@ -162,14 +162,14 @@ export default {
     },
     preplay () {
       if (this.$store.state.indexid){
-      this.Axios.get('http://localhost:3001/api/get/song/qq?id='+this.$store.state.previd['songid'])
+      this.Axios.get('http://localhost:3001/api/get/song/qq?id='+(this.$store.state.previd['songid'] || this.$store.state.previd['id']))
             .then(res => {
                 // this.searchkey = item;
                 // this.$store.commit('getsearchkey', item)
                 if (res.status == 200) {
                     this.$store.state.src = res.data.data.url;
-                    this.$store.state.songname = this.$store.state.previd['songname'];
-                    this.$store.state.singer = this.$store.state.previd.singerlist[0].singer;
+                    this.$store.state.songname = this.$store.state.previd['songname']  || this.$store.state.previd['name'];;
+                    this.$store.state.singer = this.$store.state.previd.singerlist && this.$store.state.previd.singerlist[0].singer  || this.$store.state.previd['artists'][0]['name'];
                     this.$store.state.coversmall = this.$store.state.previd['album']['coverSmall'];
                     this.$store.state.cover = this.$store.state.previd['album']['cover'];
                     this.$store.state.showplay = true;
@@ -188,14 +188,14 @@ export default {
     },
     nextplay () {
       if (this.$store.state.indexid < this.$store.state.reslist.length){
-        this.Axios.get('http://localhost:3001/api/get/song/qq?id='+this.$store.state.nextvid['songid'])
+        this.Axios.get('http://localhost:3001/api/get/song/qq?id='+(this.$store.state.nextvid['songid'] || this.$store.state.nextvid['id']))
             .then(res => {
                 // this.searchkey = item;
                 // this.$store.commit('getsearchkey', item)
                 if (res.status == 200) {
                     this.$store.state.src = res.data.data.url;
-                    this.$store.state.songname = this.$store.state.nextvid['songname'];
-                    this.$store.state.singer = this.$store.state.nextvid.singerlist[0].singer;
+                    this.$store.state.songname = this.$store.state.nextvid['songname'] || this.$store.state.nextvid['name'];
+                    this.$store.state.singer = this.$store.state.nextvid.singerlist && this.$store.state.nextvid.singerlist[0].singer || this.$store.state.nextvid['artists'][0]['name'];
                     this.$store.state.coversmall = this.$store.state.nextvid['album']['coverSmall'];
                     this.$store.state.cover = this.$store.state.nextvid['album']['cover'];
                     this.$store.state.showplay = true;
