@@ -1,8 +1,12 @@
 <template>
   <div id="app">
     <v-index ref="showheaderef"></v-index>
-    <!--<img src="./assets/logo.png">-->
-    <keep-alive><router-view></router-view></keep-alive>
+    <keep-alive>
+    <router-view v-if="$route.meta.keepAlive"></router-view>
+    </keep-alive>
+    <transition :name="transitionName">
+    <router-view v-if="!$route.meta.keepAlive"></router-view>
+    </transition>
     <div class="footer" v-show="showFooter">
       <router-link to="/play" v-on:click.native="showhf" v-show="showfootplay" ref="play">
         <img :src="cover" alt="" class="avatar" v-show="avatarShow" >
@@ -30,12 +34,21 @@ export default {
         // showFooter: true,
         picUrl: '',
         avatarShow: true,
-        avatar1Show: false
+        avatar1Show: false,
+        transitionName: 'slide-left'
     }
   },
   mounted() {
     var audio = document.querySelector('.audio');
     audio.addEventListener('timeupdate', this.throttle(this.Progress));
+  },
+  watch: {
+    '$route'(to, from) {
+    const toDepth = to.path;
+    const fromDepth = from.path;
+    // this.transitionName = toDepth == '/detail' && 'slide-left';
+    // console.log(this.transitionName);
+}
   },
   computed: {
     src () {
@@ -132,6 +145,7 @@ export default {
     display: -ms-flexbox;
     display: flex;
     align-items: center;
+    z-index: 1;
     img {
       position: absolute;
       width: 2.5rem;
@@ -143,6 +157,21 @@ export default {
 body {
   margin: 0;
 }
+
+.slide-left-enter-active {
+  transition: all 0.5s ease;
+}
+.slide-left-enter {
+  // -webkit-transform: translateX(100%);
+  transform: translateX(100%);
+}
+// .slide-left-leave {
+//   transform: translateX(-100%);
+// }
+// .slide-left-leave-active, .slide-right-enter {
+//   // -webkit-transform: translateX(-100%);
+//   transform: translateX(-100%);
+// }
 .avatar{
   position: fixed;
   width: 8rem;

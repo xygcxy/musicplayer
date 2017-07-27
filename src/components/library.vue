@@ -52,7 +52,7 @@
         <i class="icon-rec"></i>
         <div class="album-content">
             <div class="detail" v-for="item in hotlist" :key="item.id">
-                <router-link to="/detail/">
+                <router-link :to="{path: 'detail', query: {id: item.id}}" @click.native="showheader">
                 <img :src="item.imgurl" alt=""><span>{{item.num}}</span>
                  <p>{{item.title}}</p>
                 </a>
@@ -161,7 +161,7 @@ export default {
     Divider
   },
   created () {
-    this.librequest()
+    this.librequest();
   },
   data () {
     return {
@@ -190,6 +190,7 @@ export default {
                         url: 'https://y.qq.com/n/yqq/playlist/' + item.dissid + '.html',
                         imgurl: item.imgurl,
                         title: item.dissname,
+                        id: item.dissid,
                         num: this.shorten(item.listennum)
                     }));
                     //MV
@@ -215,6 +216,9 @@ export default {
             .catch(function(err){
                 console.log(err);
         });
+      },
+      showheader () {
+          this.$store.state.showheader = false;
       }
   }
 }

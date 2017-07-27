@@ -212,7 +212,7 @@ export default {
 .search {
     margin-top: 2.8rem;
 }
-h3{
+.search-rec h3{
     text-align: left;
     margin-left: 1rem;
     margin-bottom: 0.5rem;

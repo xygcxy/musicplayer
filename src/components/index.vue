@@ -8,7 +8,7 @@
                 <div class="top-content">
                     <router-link to="/index" active-class="link-active">
                     <span>我的</span>
-                    </router-link> 
+                    </router-link>
                     <router-link to="/library" active-class="link-active">
                     <span>音乐馆</span>
                     </router-link>

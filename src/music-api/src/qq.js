@@ -375,9 +375,10 @@ const getPlaylist = (disstid, raw) => {
     type: 1,
     json: 1,
     utf8: 1,
-    onlysong: 1,
+    // onlysong: 1,
     disstid: disstid,
     format: 'json',
+    pic: 500,
     inCharset: 'utf8',
     outCharset: 'utf-8',
     platform: 'yqq'
@@ -389,16 +390,17 @@ const getPlaylist = (disstid, raw) => {
         Host: 'c.y.qq.com'
       },
     })
-      .then(res => res.text())
-      .then(text => {
-        text = text.substr(13);
-        text = text.substr(0, text.length - 1);
-        return Promise.resolve(JSON.parse(text));
-      })
+      .then(res => res.json())
+      // .then(text => {
+      //   text = text.substr(13);
+      //   text = text.substr(0, text.length - 1);
+      //   return Promise.resolve(JSON.parse(text));
+      // })
       .then(pl => {
         if(raw){
           resolve(pl);
         }
+        pl = pl.cdlist[0];
         let songList = pl.songlist.map(item => {
           return {
             id: item.songmid,
@@ -416,14 +418,17 @@ const getPlaylist = (disstid, raw) => {
         });
         let obj = {
           success: true,
-          name: null,
+          name: pl.dissname,
           id: pl.disstid,
-          cover: null,
+          cover: pl.logo,
           author: {
-            id: null,
-            name: null,
+            id: pl.uin || null,
+            name: pl.nickname || null,
             avatar: null
           },
+          desc: pl.desc,
+          tags: pl.tags,
+          visitnum: pl.visitnum,
           songList: songList
         };
         resolve(obj);

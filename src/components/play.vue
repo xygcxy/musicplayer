@@ -7,7 +7,7 @@
         <a href=""></a>
       </div>
       <div class="t-small">
-        <small>—— {{singer}} ——</small>
+        <small>— {{singer}} —</small>
       </div>
         <div class="rot">
             <img :src="cover" alt="" class="rotImg" v-show="rotImgShow" :class="{'pauseplay': !pause, 'continueplay': pause}">
