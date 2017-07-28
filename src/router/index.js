@@ -7,6 +7,7 @@ import search from '@/components/search'
 import user from '@/components/user'
 import library from '@/components/library'
 import detail from '@/components/detail'
+import top from '@/components/top'
 
 Vue.use(Router)
 
@@ -42,6 +43,12 @@ export default new Router({
       name: 'detail',
       component: detail,
       meta: {keepAlive: false} 
+    },
+    {
+      path: '/top',
+      name: 'top',
+      component: top,
+      meta: {keepAlive: true} 
     }
   ]
 })

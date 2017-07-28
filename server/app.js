@@ -24,6 +24,11 @@ router.get('/api/hotsearch', function*() {
     this.body = data && {data: data};
 })
 
+router.get('/api/gettopall', function*() {
+    var data = yield MusicApi.getTopAll();
+    this.body = data && {data: data};
+})
+
 router.get('/api/search/song/:vendor', function* (){
     let vendor = this.params.vendor;
     var data = yield MusicApi.searchSong(vendor, this.query || {});

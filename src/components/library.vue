@@ -14,10 +14,10 @@
                       </a>
                   </div>
                   <div class="icon-m">
-                      <a href="/top">
+                      <router-link to="/top">
                         <img src="../assets/icons/paihang.png" alt="">
                         <span>排行</span>
-                      </a>
+                      </router-link >
                   </div>
                   <div class="icon-right icon-s">
                       <a href="/radio">
@@ -202,7 +202,7 @@ export default {
                         num: this.shorten(item.listennum)
                     }));
                     //排行榜
-                    this.toplist = res.data.data.recdata.data.toplist;
+                    this.$store.state.toplist = res.data.data.recdata.data.toplist;
                     //最新专辑（名人）
                     this.newsongreclist = res.data.data.newsongrec.data.album.all.slice(0, 3).map((item, index) => ({
                         url: 'https://y.qq.com/n/yqq/album/'+ item.Falbum_mid + '.html',
@@ -339,6 +339,9 @@ export default {
         padding-left: 0.5rem;
         font-size: 0.5rem;
         text-align: left;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
     }
     a {
         text-decoration: none;

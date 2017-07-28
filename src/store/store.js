@@ -19,6 +19,7 @@ export default new vuex.Store({
         previd: '',
         nextvid: '',
         indexid: '',
+        toplist: '',
         progress: 0,
         allload: false,
         loadmore: false,
