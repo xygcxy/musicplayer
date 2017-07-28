@@ -217,12 +217,17 @@ const hotSearch = () => {
   return QQAPI.hotSearch();
 }
 
+const getTopAll = () => {
+  return QQAPI.getTopAll();
+}
+
 const musicAPI = {
   searchSong: searchSong,
   searchAlbum: searchAlbum,
   searchPlaylist: searchPlaylist,
   getSong: getSong,
   getTop: getTop,
+  getTopAll: getTopAll,
   getAlbum: getAlbum,
   hotSearch: hotSearch,
   getPlaylist: getPlaylist,

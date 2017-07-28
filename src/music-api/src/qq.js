@@ -405,6 +405,7 @@ const getPlaylist = (disstid, raw) => {
           return {
             id: item.songmid,
             name: item.songname,
+            interval: item.interval,
             artists: item.singer.map(i => {return{id: i.mid, name: i.name}}),
             needPay: item.pay.payplay > 0 ? true : false,
             album: {
@@ -489,12 +490,30 @@ const hotSearch = () => {
   });
 }
 
+const getTopAll = () => {
+  let url = `https://c.y.qq.com/v8/fcg-bin/fcg_v8_toplist_opt.fcg?page=index&format=html&v8debug=1`;
+  return new Promise((resolve, reject) => {
+    fetch(url)
+      .then(res => res.text())
+      .then(text => {
+        text = text.replace('jsonCallback(', '');
+        let json = JSON.parse(text.substr(0, text.length - 1));
+        resolve(json);
+      })
+      .catch(err => reject({
+        success: false,
+        message: err
+      }))
+  })
+}
+
 module.exports = {
   searchSong: searchSong,
   searchPlaylist: searchPlaylist,
   searchAlbum: searchAlbum,
   getSong: getSong,
   getTop: getTop,
+  getTopAll: getTopAll,
   getHomeData: getHomeData,
   getAlbum: getAlbum,
   hotSearch: hotSearch,
