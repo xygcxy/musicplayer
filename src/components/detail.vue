@@ -2,6 +2,7 @@
   <div>
     <div class="mod_focus">
         <div class="icon_back" @click="backlib"></div>
+        <div class="title">歌单</div>
         <div class="focus_bg" :style="{backgroundImage: 'url('+cover+')'}"></div>
         <div class="focus_title">
             <div class="focus_info">
@@ -36,7 +37,7 @@
     </div>
     <div class="desc">
         <div class="desc_content">
-            <p>{{desc}}</p>
+            <p v-html="desc">{{desc}}</p>
         </div>
     </div> 
     </div>   
@@ -122,6 +123,13 @@ export default {
 *{
     padding: 0;
     margin: 0;
+}
+.title {
+    position: absolute;
+    left: 47%;
+    color: #fff;
+    top: 1.2rem;
+    font-size: 1.2rem;
 }
 .mod_focus {
     position: relative;

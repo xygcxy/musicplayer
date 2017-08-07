@@ -51,6 +51,9 @@ Vue.prototype.formatVideoDuration = function (duration) {
 			s = duration % 60;
 		return (h ? h+':' : '')+(m>9 ? m : '0'+m)+':'+(s>9 ? s : '0'+s);
 }
+Vue.filter('formatnum', function(value) {
+  return Vue.prototype.shorten(value);
+})
 Vue.prototype.throttle = function (handle, delay, time) {
   var timer = null;
   var previous = new Date();

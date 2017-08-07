@@ -1,6 +1,10 @@
 <template>
   <div>
       <div class="top_content">
+          <div class="top_header">
+            <div class="icon_back" @click="backlib"></div>
+            <div class="title">排行</div>
+          </div>
           <p>{{qqtoptitle}}</p>
           <div class="qq_top">
               <ul>
@@ -8,13 +12,14 @@
                       <div class="topmain">
                           <a class="topic_media">
                               <img :src="item.pic_v12" alt="">
-                              <span><i>{{item.listennum}}</i></span>
+                              <span><i>{{item.listennum|formatnum}}</i></span>
                           </a>
                           <div class="top_info">
                               <div class="qq_song">
                               <h3>{{item.ListName}}</h3>
                               <p v-for="(value, index) in item.songlist" :key="value.id">
-                                 {{index+1}}<span>{{value.songname}}</span>-{{value.singername}}
+                                 <span class="singername">{{index+1}}</span><span> {{value.songname}}</span>
+                                 <span class="singername">-{{value.singername}}</span>
                               </p>
                               </div>
                           </div>
@@ -23,7 +28,7 @@
               </ul>
           </div>
           <div class="global_top">
-              <p>{{globaltoptitle}}</p>
+              <p class="global_title">{{globaltoptitle}}</p>
               <div class="global_top_content">
               <div class="global_content" v-for="(item, index) in globaltop" :key="item.id">
                   <div class="global_info">
@@ -65,7 +70,11 @@ export default {
                 console.log(err);
         });
         
-    }
+    },
+    backlib () {
+        this.$store.state.showheader = true;
+        this.$router.go(-1);
+    },
   },
   computed: {
       
@@ -80,12 +89,37 @@ export default {
 body{
     background: #f4f4f4;
 }
+.top_header {
+    height: 3.5rem;
+    background-color: #31C37C;
+}
+.title {
+    padding-top: 1.2rem;
+    font-size: 1.2rem;
+    color: #fff;
+}
+.icon_back {
+    background-image: url(../assets/icons/return.png);
+    background-size: cover;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    width: 2rem;
+    height: 2rem;
+}
 .qq_top {
     margin: 10px;
 }
 .topmain {
     display: -webkit-box;
     background: #fff;
+    i {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        color: #fff;
+        opacity: .6;
+    }
 }
 .topic_media {
     position: relative;
@@ -127,53 +161,68 @@ body{
         white-space: nowrap;
         text-overflow: ellipsis;
     }
+    p{
+        padding-bottom: 0.3rem;
+    }
 }
 .qq_song {
     -webkit-box-flex: 1;
     margin: 0 10px 0 15px;
 }
+.singername {
+    opacity: .6;
+}
 .global_top {
-    // display: flex;
-    // justify-content: space-between;
-    // flex-wrap:wrap;
-    // -webkit-box-pack: center;
-    // -ms-flex-pack: center;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap:wrap;
+    padding-bottom: 4rem;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
     img {
         width: 99%;
         height: 99%;
     }
     p {
         overflow: hidden;
-        white-space: nowrap;
+        // white-space: nowrap;
         text-overflow: ellipsis;
     }
+}
+.global_title {
+    position: relative;
+    margin: 0 auto;
 }
 .global_info {
     position: relative;
     overflow: hidden;
 }
 .global_top_content {
+    margin-top: 1rem;
     display: flex;
     justify-content: space-between;
     flex-wrap:wrap;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
 }
 .global_content {
-    flex: 1;
+    width:33%;
+    height: 33%;
     position: relative;
-    width: 30%;
+    img {
+        width: 100%;
+        height: 100%;
+    }
     p {
         padding-left: 0.5rem;
-        padding-right: 1rem;
-        font-size: 1rem;
-        height: 2rem;
+        font-size: 0.9rem;
         text-align: left;
-        overflow : hidden;
+        height: 2.5rem;
+        overflow: hidden;
         text-overflow: ellipsis;
         display: -webkit-box;
-        -webkit-line-clamp:2;
+        -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
     }
 }
+
+
 </style>

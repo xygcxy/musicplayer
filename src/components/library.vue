@@ -14,7 +14,7 @@
                       </a>
                   </div>
                   <div class="icon-m">
-                      <router-link to="/top">
+                      <router-link to="/top" @click.native="showheader">
                         <img src="../assets/icons/paihang.png" alt="">
                         <span>排行</span>
                       </router-link >
