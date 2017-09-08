@@ -148,20 +148,20 @@ export default {
       },
       handleScroll () {
         this.scroll = document.body.scrollTop;
-        this.clientHeight = parseInt(1100*(this.page-1));
+        this.clientHeight = document.documentElement.clientHeight;
         this.scrollheight = document.body.scrollHeight;
         // console.log(this.scroll)
         // console.log(this.clientHeight);
         // console.log(this.scrollheight);
         // return;
         if (this.$store.state.searchkey && this.$store.state.reslist) {
-        var scroll = this.page == 2 && parseInt(this.scroll + this.clientHeight - 460) || parseInt(this.scroll - 1100*(this.page-2) + this.clientHeight - 460);
+        // var scroll = this.page == 2 && parseInt(this.scroll + this.clientHeight - 460) || parseInt(this.scroll - 1100*(this.page-2) + this.clientHeight - 460);
         if (parseInt(this.total/20) <= this.page) {
             // window.removeEventListener('scroll', this.handleScroll());
             this.$store.state.loadmore = false;
             this.$store.state.allload = true;
             return;
-        } else if (scroll >= parseInt(this.scrollheight)) {
+        } else if (this.scroll +  this.clientHeight >= parseInt(this.scrollheight)) {
             var page = this.page;
             var item = this.$store.state.searchkey;
             this.$store.state.loadmore = true;
